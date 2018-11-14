@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Наталья Макарова](https://up.htmlacademy.ru/php/7/user/676153).
-* Наставник: `Неизвестно`.
+* Наставник: [Денис Байдаров] (https://up.htmlacademy.ru/htmlcss/21/user/7956).
 
 ---
 
