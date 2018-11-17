@@ -4,8 +4,6 @@ $is_auth = rand(0, 1);
 $user_name = 'Natalia'; // укажите здесь ваше имя
 $user_avatar = 'img/user.jpg';
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
-$index = 0;
-$num_count = count($categories);
 $products_list = [
     [
         'title' => '2014 Rossignol District Snowboard',
@@ -96,12 +94,11 @@ $products_list = [
         <h2 class="promo__title">Нужен стафф для катки?</h2>
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
-            <?php while($index < $num_count): ?>
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?=$categories[$index];?></a>
-            </li>
-            <?php $index = $index + 1; ?>
-            <?php endwhile; ?>
+            <?php foreach ($categories as $value): ?>
+              <li class="promo__item promo__item--boards">
+                  <a class="promo__link" href="pages/all-lots.html"><?=$value?></a>
+              </li>
+            <?php endforeach; ?>
         </ul>
     </section>
     <section class="lots">
@@ -137,9 +134,9 @@ $products_list = [
     <nav class="nav">
         <ul class="nav__list container">
             <?php foreach ($categories as $value): ?>
-            <li class="nav__item">
-                <a href="pages/all-lots.html"><?=$value?></a>
-            </li>
+              <li class="nav__item">
+                  <a href="pages/all-lots.html"><?=$value?></a>
+              </li>
             <?php endforeach; ?>
         </ul>
     </nav>
