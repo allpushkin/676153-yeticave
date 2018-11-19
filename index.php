@@ -42,6 +42,15 @@ $products_list = [
         'image' => 'img/lot-6.jpg'
     ]
 ];
+
+function cost_formatting($cost) {
+    $cost = ceil($cost);
+    if ($cost >= 1000) {
+        $cost = number_format($cost,0,'',' ');
+    }
+    $cost .= " ₽";
+    return $cost;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -117,7 +126,7 @@ $products_list = [
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?=$product['cost'];?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?=cost_formatting($product['cost']);?></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
