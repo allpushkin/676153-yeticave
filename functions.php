@@ -24,4 +24,12 @@ function cost_formatting($cost) {
     $cost .= " ₽";
     return $cost;
 }
+
+function lottime_left() {
+    $time_left = strtotime('tomorrow') - time();
+    $hours = floor($time_left / 3600);
+    $minutes = floor(($time_left % 3600) / 60);
+    $time_left = $hours . ':' . $minutes;
+    return $time_left;
+}
 ?>
