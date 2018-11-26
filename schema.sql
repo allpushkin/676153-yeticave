@@ -7,13 +7,11 @@ USE yeticave;
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   add_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  email VARCHAR(128) NOT NULL UNIQUE,
-  username VARCHAR(64) NOT NULL UNIQUE,
+  email VARCHAR(128) NOT NULL,
+  username VARCHAR(64) NOT NULL,
   password VARCHAR(64) NOT NULL,
   avatar VARCHAR(255),
-  contacts TEXT NOT NULL,
-  lots INT,
-  bids INT
+  contacts TEXT NOT NULL
 );
 
 CREATE TABLE categories (
@@ -35,16 +33,15 @@ CREATE TABLE lots (
   winner_id INT
 );
 
-CREATE TABLE bids (
+CREATE TABLE bets (
   id INT AUTO_INCREMENT PRIMARY KEY,
   add_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   lot_id INT NOT NULL,
   user_id INT NOT NULL,
-  bid INT NOT NULL
+  bet_amount INT NOT NULL
 );
 
 CREATE UNIQUE INDEX user_email ON users(email);
-CREATE UNIQUE INDEX user_name ON users(username);
 CREATE INDEX cat_title ON categories(title);
 CREATE INDEX lot_category ON lots(category_id);
 CREATE INDEX lot_title ON lots(title);
