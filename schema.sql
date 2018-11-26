@@ -25,7 +25,7 @@ CREATE TABLE `lots` (
   `author_id` INT UNSIGNED NOT NULL,
   `category_id` INT UNSIGNED NOT NULL,
   `title` VARCHAR(255) NOT NULL,
-  `description` TEXT NOT NULL,
+  `desc` TEXT NOT NULL,
   `picture` VARCHAR(255) NOT NULL,
   `start_price` INT UNSIGNED NOT NULL,
   `completion_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,4 +45,8 @@ CREATE UNIQUE INDEX user_email ON users(`email`);
 CREATE INDEX cat_title ON categories(`title`);
 CREATE INDEX lot_category ON lots(`category_id`);
 CREATE INDEX lot_title ON lots(`title`);
+CREATE INDEX lot_author ON lots(`author_id`);
+CREATE INDEX lot_desc ON lots(`desc`(1000));
+CREATE INDEX lot_winner ON lots(`winner_id`);
+CREATE INDEX bet ON bets(`bet_amount`);
 
