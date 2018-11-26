@@ -46,7 +46,6 @@ CREATE INDEX cat_title ON categories(`title`);
 CREATE INDEX lot_category ON lots(`category_id`);
 CREATE INDEX lot_title ON lots(`title`);
 CREATE INDEX lot_author ON lots(`author_id`);
-CREATE INDEX lot_desc ON lots(`desc`(1000));
 CREATE INDEX lot_winner ON lots(`winner_id`);
 CREATE INDEX bet ON bets(`bet_amount`);
 
