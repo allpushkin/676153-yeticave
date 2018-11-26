@@ -43,4 +43,9 @@ CREATE TABLE bids (
   bid INT NOT NULL
 );
 
+CREATE UNIQUE INDEX user_email ON users(email);
+CREATE UNIQUE INDEX user_name ON users(username);
+CREATE INDEX cat_title ON categories(title);
+CREATE INDEX lot_category ON lots(category_id);
+CREATE INDEX lot_title ON lots(title);
 
