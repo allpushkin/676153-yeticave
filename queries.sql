@@ -35,9 +35,11 @@ VALUES ('2018-11-24 12:25:00', '4', '1', '7600');
 SELECT `id`, `title` FROM categories;
 
 /*Получить самые новые, открытые лоты*/
-SELECT lots.`id`, lots.`title`, `start_price`, `picture`, categories.`title` FROM lots
+SELECT lots.`id`, lots.`title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` FROM lots
+LEFT JOIN bets ON lots.id = bets.lot_id
 INNER JOIN categories ON lots.category_id = categories.id
-WHERE `winner_id` IS NULL;
+WHERE `winner_id` IS NULL
+GROUP BY lots.`id`;
 
 /*Показать лот по его id, получить название категории, к которой принадлежит лот*/
 SELECT lots.`id`, lots.`title`, categories.`title` FROM lots
