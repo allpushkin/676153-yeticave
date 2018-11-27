@@ -31,6 +31,28 @@ VALUES ('2018-11-20 19:45:00', '1', '3', '11500');
 INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`)
 VALUES ('2018-11-24 12:25:00', '4', '1', '7600');
 
+/*Получить все категории*/
+SELECT `id`, `title` FROM categories;
+
+/*Получить самые новые, открытые лоты*/
+SELECT lots.`id`, lots.`title`, `start_price`, `picture`, categories.`title` FROM lots
+INNER JOIN categories ON lots.category_id = categories.id
+WHERE `winner_id` IS NULL;
+
+/*Показать лот по его id, получить название категории, к которой принадлежит лот*/
+SELECT lots.`id`, lots.`title`, categories.`title` FROM lots
+INNER JOIN categories ON lots.category_id = categories.id
+WHERE lots.`id` = '5';
+
+/*Обновить название лота по его идентификатору*/
+UPDATE lots SET `title` = 'Очень крутые ботинки для сноуборда DC Mutiny Charocal'
+WHERE `id` = '4';
+
+/*Получить список самых свежих ставок для лота по его идентификатору*/
+SELECT lots.`title`, `bet_amount`, bets.`add_date` FROM bets
+INNER JOIN lots ON bets.lot_id = lots.id
+WHERE `lot_id` = '1';
+
 
 
 
