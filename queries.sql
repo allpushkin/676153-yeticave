@@ -38,7 +38,7 @@ SELECT `id`, `title` FROM categories;
 SELECT lots.`id`, lots.`title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` FROM lots
 LEFT JOIN bets ON lots.id = bets.lot_id
 INNER JOIN categories ON lots.category_id = categories.id
-WHERE `winner_id` IS NULL
+WHERE `winner_id` IS NULL AND `creation_date` > '2018-11-23 00:00:00'
 GROUP BY lots.`id`;
 
 /*Показать лот по его id, получить название категории, к которой принадлежит лот*/
@@ -53,7 +53,7 @@ WHERE `id` = '4';
 /*Получить список самых свежих ставок для лота по его идентификатору*/
 SELECT lots.`title`, `bet_amount`, bets.`add_date` FROM bets
 INNER JOIN lots ON bets.lot_id = lots.id
-WHERE `lot_id` = '1';
+WHERE `lot_id` = '4' AND `add_date` >= '2018-11-24 00:00:00';
 
 
 
