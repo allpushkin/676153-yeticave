@@ -4,7 +4,7 @@ require_once('data.php');
 require_once('init.php');
 
 if (!$connect) {
-    print('Ошибка: Невозможно подключиться к MySQL ' . mysqli_connect_error());
+    die('Ошибка: Невозможно подключиться к MySQL ' . mysqli_connect_error());
 }
 else {
     //SQL-запрос для получения списка новых лотов

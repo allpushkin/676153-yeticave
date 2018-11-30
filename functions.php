@@ -40,4 +40,6 @@ function lottime_left() {
     $time_left = $hours . ':' . $minutes;
     return $time_left;
 }
+
+
 ?>
