@@ -1,5 +1,6 @@
 /*Заполнение списка категорий*/
 INSERT INTO categories (`category_title`) VALUES ('Доски и лыжи'), ('Крепления'), ('Ботинки'), ('Одежда'), ('Инструменты'), ('Разное');
+INSERT INTO categories set `category_title` = 'Новая категория';
 
 /*Добавление новых пользователей*/
 INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`)
@@ -22,6 +23,8 @@ INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, 
 VALUES ('2018-11-24 00:00:00', '2', '1', 'DC Ply Mens 2016/2017 Snowboard', 'Описание доски', 'img/lot-2.jpg', '159999', '2018-12-24 00:00:00', '1');
 INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)
 VALUES ('2018-11-25 00:00:00', '1', '1', '2014 Rossignol District Snowboard', 'Описание доски', 'img/lot-1.jpg', '10999', '2018-12-25 00:00:00', '10');
+INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)
+VALUES ('2018-11-30 06:00:00', '1', '6', 'Новый лот', 'Описание нового лота', 'img/lot-6.jpg', '4580', '2018-12-30 06:00:00', '200');
 
 /*Добавление ставок*/
 INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`)
