@@ -1,6 +1,6 @@
 /*Заполнение списка категорий*/
-INSERT INTO categories (`category_title`) VALUES ('Доски и лыжи'), ('Крепления'), ('Ботинки'), ('Одежда'), ('Инструменты'), ('Разное');
-INSERT INTO categories set `category_title` = 'Новая категория';
+INSERT INTO categories (`title`) VALUES ('Доски и лыжи'), ('Крепления'), ('Ботинки'), ('Одежда'), ('Инструменты'), ('Разное');
+INSERT INTO categories set `title` = 'Новая категория';
 
 /*Добавление новых пользователей*/
 INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`)
@@ -35,10 +35,10 @@ INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`)
 VALUES ('2018-11-21 12:25:00', '2', '1', '7600');
 
 /*Получить все категории*/
-SELECT `id`, `category_title` FROM categories;
+SELECT `id`, `title` FROM categories;
 
 /*Получить самые новые, открытые лоты*/
-SELECT lots.`id`, lots.`title`, `start_price`, `picture`, MAX(`bet_amount`), `category_title` FROM lots
+SELECT lots.`id`, lots.`title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` FROM lots
 LEFT JOIN bets ON lots.id = bets.lot_id
 INNER JOIN categories ON lots.category_id = categories.id
 WHERE `winner_id` IS NULL
@@ -46,7 +46,7 @@ GROUP BY lots.`id`
 ORDER BY lots.`creation_date` DESC;
 
 /*Показать лот по его id, получить название категории, к которой принадлежит лот*/
-SELECT lots.`id`, lots.`title`, `category_title` FROM lots
+SELECT lots.`id`, lots.`title`, categories.`title` FROM lots
 INNER JOIN categories ON lots.category_id = categories.id
 WHERE lots.`id` = '5';
 

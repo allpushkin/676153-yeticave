@@ -16,7 +16,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `categories` (
   `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `category_title` VARCHAR(128) NOT NULL UNIQUE
+  `title` VARCHAR(128) NOT NULL UNIQUE
 );
 
 CREATE TABLE `lots` (

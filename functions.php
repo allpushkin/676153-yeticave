@@ -44,7 +44,7 @@ function lottime_left() {
 
 //Функция для получения списка новых, открытых лотов
 function get_lots($connect) {
-    $sql = 'SELECT lots.`id`, lots.`title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`category_title` FROM lots '
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
          . 'WHERE `winner_id` IS NULL '
@@ -62,7 +62,7 @@ function get_lots($connect) {
 
 //Функция для получения списка категорий
 function get_categories($connect) {
-    $sql = 'SELECT `category_title` FROM categories';
+    $sql = 'SELECT `title` FROM categories';
     $res = mysqli_query($connect, $sql);
 
     if($res) {
