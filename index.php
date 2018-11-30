@@ -23,6 +23,16 @@ else {
     else {
         $print('Произошла ошибка при выполнении запроса');
     }
+    //SQL-запрос для получения списка категорий
+    $sql = 'SELECT `category_title` FROM categories';
+    $res = mysqli_query($connect, $sql);
+
+    if($res) {
+       $categories = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    else {
+        $print('Произошла ошибка при выполнении запроса');
+    }
 }
 
 $page_content = include_template('index.php', [

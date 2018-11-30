@@ -8,6 +8,7 @@ $database = [
 $is_auth = rand(0, 1);
 $user_name = 'Natalia'; // укажите здесь ваше имя
 $user_avatar = 'img/user.jpg';
+/*
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 $products_list = [
     [
@@ -48,3 +49,4 @@ $products_list = [
     ]
 ];
 ?>
+*/
