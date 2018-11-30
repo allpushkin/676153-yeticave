@@ -6,37 +6,15 @@ require_once('init.php');
 if (!$connect) {
     die('Ошибка: Невозможно подключиться к MySQL ' . mysqli_connect_error());
 }
-else {
-    //SQL-запрос для получения списка новых лотов
-    $sql = 'SELECT lots.`id`, lots.`title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`category_title` FROM lots '
-         . 'LEFT JOIN bets ON lots.id = bets.lot_id '
-         . 'INNER JOIN categories ON lots.category_id = categories.id '
-         . 'WHERE `winner_id` IS NULL '
-         . 'GROUP BY lots.`id` '
-         . 'ORDER BY lots.`creation_date` DESC';
 
-    if ($result = mysqli_query($connect, $sql)) {
-        $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    }
-    else {
-        $print('Произошла ошибка при выполнении запроса');
-    }
-    //SQL-запрос для получения списка категорий
-    $sql = 'SELECT `category_title` FROM categories';
-    $res = mysqli_query($connect, $sql);
-
-    if($res) {
-       $categories = mysqli_fetch_all($res, MYSQLI_ASSOC);
-    }
-    else {
-        $print('Произошла ошибка при выполнении запроса');
-    }
-}
+$categories = get_categories($connect);
+$lots = get_lots($connect);
 
 $page_content = include_template('index.php', [
     'categories' => $categories,
     'lots' => $lots
  ]);
+
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,

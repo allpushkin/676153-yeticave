@@ -48,5 +48,5 @@ $products_list = [
         'image' => 'img/lot-6.jpg'
     ]
 ];
-?>
 */
+?>
