@@ -3,10 +3,6 @@ require_once('functions.php');
 require_once('data.php');
 require_once('init.php');
 
-if (!$connect) {
-    die('Ошибка: Невозможно подключиться к MySQL ' . mysqli_connect_error());
-}
-
 $categories = get_categories($connect);
 $lots = get_lots($connect);
 
