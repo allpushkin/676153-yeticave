@@ -56,7 +56,7 @@ function get_lots($connect) {
         return $lots;
     }
     else {
-        $print('Произошла ошибка при выполнении запроса');
+        error_show(mysqli_error($connect));
     }
 }
 
@@ -70,7 +70,26 @@ function get_categories($connect) {
         return $categories;
     }
     else {
-        $print('Произошла ошибка при выполнении запроса');
+        error_show(mysqli_error($connect));
     }
 }
+
+//Функция для вывода ошибки
+function error_show($error) {
+    if(!$connect) {
+        $page_content = include_template('error.php', [
+            'error' => $error
+        ]);
+        $layout_content = include_template('layout.php', [
+            'content' => $page_content,
+            'is_auth' => $is_auth,
+            'username' => $user_name,
+            'title' => 'Ошибка',
+            'categories' => $categories
+        ]);
+        print $layout_content;
+        die();
+    }
+}
+
 ?>
