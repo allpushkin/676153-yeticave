@@ -79,12 +79,11 @@ function error_show($error) {
     $page_content = include_template('error.php', [
         'error' => $error
     ]);
-    $layout_content = include_template('layout.php', [
+    $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'is_auth' => $is_auth,
         'username' => $user_name,
         'title' => 'Ошибка',
-        'categories' => $categories
     ]);
     print $layout_content;
     die();
