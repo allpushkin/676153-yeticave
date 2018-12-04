@@ -60,6 +60,23 @@ function get_lots($connect) {
     }
 }
 
+function get_lot_byId($connect, $lot_id) {
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `desc`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
+         . 'LEFT JOIN bets ON lots.id = bets.lot_id '
+         . 'INNER JOIN categories ON lots.category_id = categories.id '
+         . 'WHERE lots.`id` =' .$lot_id;
+
+    if ($result = mysqli_query($connect, $sql)) {
+        $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $lot;
+    }
+    else {
+        error_show(mysqli_error($connect));
+    }
+}
+
+
+
 //Функция для получения списка категорий
 function get_categories($connect) {
     $sql = 'SELECT `title` FROM categories';
