@@ -69,11 +69,6 @@ function get_lot_by_id($connect, $lot_id) {
 
     if ($result = mysqli_query($connect, $sql)) {
         $lot = mysqli_fetch_assoc($result);
-
-        if(!isset($lot['id'])) {
-            http_response_code(404);
-            error404_show();
-        };
         return $lot;
     }
     else {
@@ -111,9 +106,7 @@ function error_show($error) {
 }
 
 function error404_show() {
-    $page_content = include_template('404.php', [
-        '' => ''
-    ]);
+    $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'is_auth' => $is_auth,

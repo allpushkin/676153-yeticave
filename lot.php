@@ -15,6 +15,11 @@ else {
 
 $lot = get_lot_by_id($connect, $lot_id);
 
+if(!isset($lot['id'])) {
+    http_response_code(404);
+    error404_show();
+};
+
 $page_content = include_template('lot.php', [
     'categories' => $categories,
     'lot' => $lot
