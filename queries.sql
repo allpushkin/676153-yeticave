@@ -54,7 +54,7 @@ WHERE `id` = '4';
 /*Получить список самых свежих ставок для лота по его идентификатору*/
 SELECT lots.`title`, `bet_amount`, bets.`add_date` FROM bets
 INNER JOIN lots ON bets.lot_id = lots.id
-WHERE `lot_id` = '1'
+WHERE `lot_id` = '6'
 ORDER BY `add_date` DESC;
 
 

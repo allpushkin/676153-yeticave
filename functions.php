@@ -60,14 +60,14 @@ function get_lots($connect) {
     }
 }
 
-function get_lot_byId($connect, $lot_id) {
+function get_lot_by_id($connect, $lot_id) {
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `desc`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
          . 'WHERE lots.`id` =' .$lot_id;
 
     if ($result = mysqli_query($connect, $sql)) {
-        $lot = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $lot = mysqli_fetch_assoc($result);
         return $lot;
     }
     else {

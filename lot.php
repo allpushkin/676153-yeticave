@@ -9,7 +9,7 @@ if (isset($_GET['id'])) {
     $lot_id = $_GET['id'];
 };
 
-$lot = get_lot_byId($connect, $lot_id);
+$lot = get_lot_by_id($connect, $lot_id);
 
 $page_content = include_template('lot.php', [
     'categories' => $categories,
