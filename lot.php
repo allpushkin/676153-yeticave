@@ -7,6 +7,10 @@ $categories = get_categories($connect);
 
 if (isset($_GET['id'])) {
     $lot_id = $_GET['id'];
+}
+else {
+    http_response_code(404);
+    error404_show();
 };
 
 $lot = get_lot_by_id($connect, $lot_id);
