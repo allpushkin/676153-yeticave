@@ -60,6 +60,22 @@ function get_lots($connect) {
     }
 }
 
+//Функция для получения лота по id из параметра запроса
+function get_lot_by_id($connect, $lot_id) {
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, categories.`title` AS `category_title` FROM lots '
+         . 'LEFT JOIN bets ON lots.id = bets.lot_id '
+         . 'INNER JOIN categories ON lots.category_id = categories.id '
+         . 'WHERE lots.`id` =' .$lot_id;
+
+    if ($result = mysqli_query($connect, $sql)) {
+        $lot = mysqli_fetch_assoc($result);
+        return $lot;
+    }
+    else {
+        error_show(mysqli_error($connect));
+    }
+}
+
 //Функция для получения списка категорий
 function get_categories($connect) {
     $sql = 'SELECT `title` FROM categories';
@@ -79,6 +95,18 @@ function error_show($error) {
     $page_content = include_template('error.php', [
         'error' => $error
     ]);
+    $layout_content = include_template('error_layout.php', [
+        'content' => $page_content,
+        'is_auth' => $is_auth,
+        'username' => $user_name,
+        'title' => 'Ошибка',
+    ]);
+    print $layout_content;
+    die();
+}
+
+function error404_show() {
+    $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'is_auth' => $is_auth,

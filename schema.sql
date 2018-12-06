@@ -42,7 +42,7 @@ CREATE TABLE `bets` (
 );
 
 CREATE UNIQUE INDEX user_email ON users(`email`);
-CREATE INDEX cat_title ON categories(`category_title`);
+CREATE INDEX cat_title ON categories(`title`);
 CREATE INDEX lot_category ON lots(`category_id`);
 CREATE INDEX lot_title ON lots(`title`);
 CREATE INDEX lot_author ON lots(`author_id`);
