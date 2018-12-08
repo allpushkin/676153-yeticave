@@ -42,6 +42,15 @@ function lottime_left() {
     return $time_left;
 }
 
+//Функция для добавления лота
+function add_lot($connect) {
+    $sql = 'INSERT INTO lots (creation_date, author_id, category_id, title, desc, picture, start_price, completion_date, step) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['price'], $lot['date'], $lot['step']]);
+    $res = mysqli_stmt_execute($stmt);
+    return $res;
+}
+
 //Функция для получения списка новых, открытых лотов
 function get_lots($connect) {
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
@@ -105,6 +114,7 @@ function error_show($error) {
     die();
 }
 
+//Функция для вывода страницы 404
 function error404_show() {
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
