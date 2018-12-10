@@ -47,18 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['category'] = 'Выберите, пожалуйста, категорию';
     }
 
-    if (isset($_FILES['lot_picture']['name'])) {
+    if (isset($_FILES['lot_picture']['name']) && !empty($_FILES['lot_picture']['tmp_name'])) {
         $tmp_name = $_FILES['lot_picture']['tmp_name'];
-        $path = $_FILES['lot_picture']['name'];
+        $file_name = uniqid() . '.jpg';
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
+        $file_type = finfo_file($finfo, $file_name);
         if ($file_type !== "image/jpeg" || $file_type !== "image/png") {
             $errors['lot_picture'] = 'Загрузите изображение в формате JPG или PNG';
         }
         else {
-            move_uploaded_file($tmp_name, 'img/' . $path);
-            $lot['picture'] = $path;
+            move_uploaded_file($tmp_name, 'img/' . $file_name);
+            $lot['lot_picture'] = 'img/' . $file_name;
         }
     }
     else {

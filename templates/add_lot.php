@@ -32,14 +32,13 @@
         <textarea id="message" name="lot[desc]" placeholder="Напишите описание лота"><?=$value;?></textarea>
         <span class="form__error"><?=$error;?></span>
     </div>
-    <?php $classname = isset($_FILES['lot_picture']) ? 'form__item--uploaded' : '';
-    $picture = isset($lot['lot_picture']) ? $lot['lot_picture'] : ""; ?>
+    <?php $classname = isset($lot['lot_picture']) ? 'form__item--uploaded' : ''; ?>
     <div class="form__item form__item--file <?=$classname;?>"> <!-- form__item--uploaded -->
         <label>Изображение</label>
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
             <div class="preview__img">
-                <img src="<?=$picture;?>" width="113" height="113" alt="Изображение лота">
+                <img src="" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
         <div class="form__input-file">
