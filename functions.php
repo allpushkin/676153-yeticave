@@ -44,9 +44,9 @@ function lottime_left() {
 
 //Функция для добавления лота
 function add_lot($connect) {
-    $sql = 'INSERT INTO lots (creation_date, author_id, category_id, title, `desc`, picture, start_price, completion_date, step) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?);';
 
-    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['picture'], $lot['price'], $lot['date'], $lot['step']]);
+    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
     return $res;
 }
@@ -127,5 +127,32 @@ function error404_show() {
     die();
 }
 
+function db_get_prepare_stmt($link, $sql, $data = []) {
+    $stmt = mysqli_prepare($link, $sql);
+    if ($data) {
+        $types = '';
+        $stmt_data = [];
+        foreach ($data as $value) {
+            $type = null;
+            if (is_int($value)) {
+                $type = 'i';
+            }
+            else if (is_string($value)) {
+                $type = 's';
+            }
+            else if (is_double($value)) {
+                $type = 'd';
+            }
+            if ($type) {
+                $types .= $type;
+                $stmt_data[] = $value;
+            }
+        }
+        $values = array_merge([$stmt, $types], $stmt_data);
+        $func = 'mysqli_stmt_bind_param';
+        $func(...$values);
+    }
+    return $stmt;
+}
 
 ?>

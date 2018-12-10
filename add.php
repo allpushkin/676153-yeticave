@@ -52,8 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $file_name = uniqid() . '.jpg';
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $file_name);
-        if ($file_type !== "image/jpeg" || $file_type !== "image/png") {
+        $file_type = finfo_file($finfo, $tmp_name);
+        if ($file_type !== "image/jpeg" && $file_type !== "image/png" && $file_type !== "image/jpg") {
             $errors['lot_picture'] = 'Загрузите изображение в формате JPG или PNG';
         }
         else {
@@ -74,7 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]);
     }
     else {
-        if (add_lot($connect)) {
+        $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+
+        $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
+        $res = mysqli_stmt_execute($stmt);
+        if ($res) {
             $lot_id = mysqli_insert_id($connect);
 
             header("Location: lot.php?id=" . $lot_id);
