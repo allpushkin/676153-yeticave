@@ -46,7 +46,7 @@ function lottime_left() {
 function add_lot($connect) {
     $sql = 'INSERT INTO lots (creation_date, author_id, category_id, title, `desc`, picture, start_price, completion_date, step) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
 
-    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['price'], $lot['date'], $lot['step']]);
+    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['picture'], $lot['price'], $lot['date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
     return $res;
 }

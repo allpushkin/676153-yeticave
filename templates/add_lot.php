@@ -18,7 +18,7 @@
             <select id="category" name="lot[category]" required>
                 <option>Выберите категорию</option>
                 <?php foreach ($categories as $category): ?>
-                  <option value="<?=$category['category_id']?>"><?=$category['title']?></option>
+                  <option value="<?=$category['title']?>"<?php if($category['title'] == $value): echo ' selected'; endif;?>><?=$category['title']?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>
@@ -32,13 +32,14 @@
         <textarea id="message" name="lot[desc]" placeholder="Напишите описание лота"><?=$value;?></textarea>
         <span class="form__error"><?=$error;?></span>
     </div>
-    <?php $classname = isset($_FILES['lot_picture']) ? 'form__item--uploaded' : ''; ?>
+    <?php $classname = isset($_FILES['lot_picture']) ? 'form__item--uploaded' : '';
+    $picture = isset($lot['lot_picture']) ? $lot['lot_picture'] : ""; ?>
     <div class="form__item form__item--file <?=$classname;?>"> <!-- form__item--uploaded -->
         <label>Изображение</label>
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
             <div class="preview__img">
-                <img src="img/avatar.jpg" width="113" height="113" alt="Изображение лота">
+                <img src="<?=$picture;?>" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
         <div class="form__input-file">
@@ -74,6 +75,13 @@
             <span class="form__error"><?=$error;?></span>
         </div>
     </div>
-    <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+    <?php if (isset($errors)): ?>
+      <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+      <ul>
+        <?php foreach ($errors as $err => $val): ?>
+            <li><strong><?= $dict[$err]; ?>:</strong> <?=$val;?></li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
     <button type="submit" class="button">Добавить лот</button>
 </form>

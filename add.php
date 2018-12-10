@@ -43,6 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['completion_date'] = 'Дата завершения торгов должна быть больше текущей даты хотя бы на 1 день';
     }
 
+    if ($lot['category'] == 'Выберите категорию') {
+        $errors['category'] = 'Выберите, пожалуйста, категорию';
+    }
+
     if (isset($_FILES['lot_picture']['name'])) {
         $tmp_name = $_FILES['lot_picture']['tmp_name'];
         $path = $_FILES['lot_picture']['name'];
