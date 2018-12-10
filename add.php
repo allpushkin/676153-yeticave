@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $required = [
         'title',
         'category',
-        'description',
+        'desc',
         'start_price',
         'step',
         'completion_date'
@@ -27,10 +27,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ];
     $errors = [];
     foreach ($required as $key) {
-        if (empty($_POST[$key])) {
+        if (empty($lot[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
         };
     };
+
+    if (!is_numeric($lot['start_price']) || $lot['start_price'] <= 0) {
+        $errors['start_price'] = 'Поле заполнено некорректно. Здесь должно быть целое положительное число';
+    }
+    if (!is_numeric($lot['step']) || $lot['step'] <= 0) {
+        $errors['step'] = 'Поле заполнено некорректно. Здесь должно быть целое положительное число';
+    }
+
+    if (strtotime($lot['completion_date']) <= strtotime('now')) {
+        $errors['completion_date'] = 'Дата завершения торгов должна быть больше текущей даты хотя бы на 1 день';
+    }
 
     if (isset($_FILES['lot_picture']['name'])) {
         $tmp_name = $_FILES['lot_picture']['tmp_name'];
@@ -57,15 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'dict' => $dict,
             'categories' => $categories
         ]);
-        $layout_content = include_template('layout.php', [
-            'content' => $page_content,
-            'is_auth' => $is_auth,
-            'username' => $user_name,
-            'title' => 'Добавление лота',
-            'categories' => $categories
-        ]);
-
-        print($layout_content);
     }
     else {
         if (add_lot($connect)) {
@@ -82,15 +84,14 @@ else {
     $page_content = include_template('add_lot.php', [
         'categories' => $categories
     ]);
-    $layout_content = include_template('layout.php', [
-        'content' => $page_content,
-        'is_auth' => $is_auth,
-        'username' => $user_name,
-        'title' => 'Добавление лота',
-        'categories' => $categories
-    ]);
-
-    print($layout_content);
 };
+$layout_content = include_template('layout.php', [
+    'content' => $page_content,
+    'is_auth' => $is_auth,
+    'username' => $user_name,
+    'title' => 'Добавление лота',
+    'categories' => $categories
+]);
 
+print($layout_content);
 ?>
