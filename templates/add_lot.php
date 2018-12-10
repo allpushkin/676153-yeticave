@@ -17,8 +17,8 @@
             <label for="category">Категория</label>
             <select id="category" name="lot[category]" required>
                 <option>Выберите категорию</option>
-                <?php foreach ($categories as $category): ?>
-                  <option value="<?=$category['title']?>"<?php if($category['title'] == $value): echo ' selected'; endif;?>><?=$category['title']?></option>
+                <?php foreach ($categories as $key => $cat): ?>
+                  <option value="<?=$cat['id'];?>"<?php if($cat['id'] == $value): echo ' selected'; endif;?>><?=$cat['title']?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>
