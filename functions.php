@@ -42,20 +42,6 @@ function lottime_left() {
     return $time_left;
 }
 
-//Функция для получения списка пользователей
-function get_users($connect) {
-    $sql = 'SELECT `id`, `email` FROM users';
-    $res = mysqli_query($connect, $sql);
-
-    if($res) {
-        $users = mysqli_fetch_all($res, MYSQLI_ASSOC);
-        return $users;
-    }
-    else {
-        error_show(mysqli_error($connect));
-    }
-}
-
 //Функция для добавления пользователя
 function add_user($connect, $user, $password) {
     $sql = 'INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`) VALUES (NOW(), ?, ?, ?, ?, ?)';
