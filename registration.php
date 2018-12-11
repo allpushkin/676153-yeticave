@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = password_hash($user['password'], PASSWORD_DEFAULT);
 
         if (add_user($connect, $user, $password) && empty($errors)) {
-            header("Location: /index.php");
+            header("Location: /login.php");
             exit();
         }
     }
