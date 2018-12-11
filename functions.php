@@ -42,6 +42,15 @@ function lottime_left() {
     return $time_left;
 }
 
+//Функция для добавления лота
+function add_lot($connect, $lot) {
+    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
+    $res = mysqli_stmt_execute($stmt);
+    return $res;
+}
+
 //Функция для получения списка новых, открытых лотов
 function get_lots($connect) {
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
@@ -78,7 +87,7 @@ function get_lot_by_id($connect, $lot_id) {
 
 //Функция для получения списка категорий
 function get_categories($connect) {
-    $sql = 'SELECT `title` FROM categories';
+    $sql = 'SELECT `id`, `title` FROM categories';
     $res = mysqli_query($connect, $sql);
 
     if($res) {
@@ -105,6 +114,7 @@ function error_show($error) {
     die();
 }
 
+//Функция для вывода страницы 404
 function error404_show() {
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
@@ -117,5 +127,32 @@ function error404_show() {
     die();
 }
 
+function db_get_prepare_stmt($link, $sql, $data = []) {
+    $stmt = mysqli_prepare($link, $sql);
+    if ($data) {
+        $types = '';
+        $stmt_data = [];
+        foreach ($data as $value) {
+            $type = null;
+            if (is_int($value)) {
+                $type = 'i';
+            }
+            else if (is_string($value)) {
+                $type = 's';
+            }
+            else if (is_double($value)) {
+                $type = 'd';
+            }
+            if ($type) {
+                $types .= $type;
+                $stmt_data[] = $value;
+            }
+        }
+        $values = array_merge([$stmt, $types], $stmt_data);
+        $func = 'mysqli_stmt_bind_param';
+        $func(...$values);
+    }
+    return $stmt;
+}
 
 ?>
