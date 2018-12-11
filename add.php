@@ -56,43 +56,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($file_type !== "image/jpeg" && $file_type !== "image/png" && $file_type !== "image/jpg") {
             $errors['lot_picture'] = 'Загрузите изображение в формате JPG или PNG';
         }
-        else {
-            move_uploaded_file($tmp_name, 'img/' . $file_name);
-            $lot['lot_picture'] = 'img/' . $file_name;
-        }
     }
     else {
         $errors['lot_picture'] = 'Вы не загрузили изображение';
     }
 
-    if (count($errors)) {
-        $page_content = include_template('add_lot.php', [
-            'lot' => $lot,
-            'errors' => $errors,
-            'dict' => $dict,
-            'categories' => $categories
-        ]);
-    }
-    else {
-        $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+    if (empty($errors)) {
+        move_uploaded_file($tmp_name, 'img/' . $file_name);
+        $lot['lot_picture'] = 'img/' . $file_name;
 
-        $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
-        $res = mysqli_stmt_execute($stmt);
-        if ($res) {
+        if (add_lot($connect, $lot)) {
             $lot_id = mysqli_insert_id($connect);
-
             header("Location: lot.php?id=" . $lot_id);
-        }
-        else {
+        } else {
             error_show(mysqli_error($connect));
         }
     }
-}
-else {
-    $page_content = include_template('add_lot.php', [
-        'categories' => $categories
-    ]);
+
 };
+$page_content = include_template('add_lot.php', [
+    'lot' => $lot,
+    'errors' => $errors,
+    'dict' => $dict,
+    'categories' => $categories
+]);
+
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,

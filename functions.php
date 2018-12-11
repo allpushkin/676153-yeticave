@@ -43,8 +43,8 @@ function lottime_left() {
 }
 
 //Функция для добавления лота
-function add_lot($connect) {
-    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?);';
+function add_lot($connect, $lot) {
+    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
 
     $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
@@ -87,7 +87,7 @@ function get_lot_by_id($connect, $lot_id) {
 
 //Функция для получения списка категорий
 function get_categories($connect) {
-    $sql = 'SELECT `title` FROM categories';
+    $sql = 'SELECT `id`, `title` FROM categories';
     $res = mysqli_query($connect, $sql);
 
     if($res) {
