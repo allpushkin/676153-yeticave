@@ -42,6 +42,22 @@ function lottime_left() {
     return $time_left;
 }
 
+//Функция для добавления пользователя
+function add_user($connect, $user, $password) {
+    $sql = 'INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`) VALUES (NOW(), ?, ?, ?, ?, ?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$user['email'], $user['name'], $password, $user['avatar'], $user['contacts']]);
+    $res = mysqli_stmt_execute($stmt);
+    return $res;
+}
+
+//Функция для получения id пользователя по email
+function get_user_by_email($connect, $email) {
+    $sql = "SELECT `id` FROM users WHERE `email` = '$email'";
+    $res = mysqli_query($connect, $sql);
+    return $res;
+}
+
 //Функция для добавления лота
 function add_lot($connect, $lot) {
     $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
