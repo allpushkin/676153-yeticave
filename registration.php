@@ -52,8 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty($errors)) {
-        move_uploaded_file($tmp_name, 'img/' . $file_name);
-        $user['avatar'] = 'img/' . $file_name;
+        if (!empty($_FILES['avatar']['tmp_name'])) {
+            move_uploaded_file($tmp_name, 'img/' . $file_name);
+            $user['avatar'] = 'img/' . $file_name;
+        }
 
         $password = password_hash($user['password'], PASSWORD_DEFAULT);
 
