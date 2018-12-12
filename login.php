@@ -25,7 +25,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         };
     };
 
+    if (!empty($enter['email'])) {
+        $email = mysqli_real_escape_string($connect, $enter['email']);
+        $user = get_user_all_by_email($connect, $email);
 
+        if (!$user) {
+            $errors['email'] = 'Пользователь с таким email не найден';
+        }
+    }
+
+    if (empty($errors) && $user) {
+        if (password_verify($enter['password'], $user['password'])) {
+            $_SESSION['user'] = $user;
+
+        }
+        else {
+            $errors['password'] = 'Вы ввели неверный пароль';
+        }
+    }
+    if ($_SESSION['user']) {
+        header("Location: /index.php");
+        exit();
+    }
 }
 
 $page_content = include_template('login.php', [
