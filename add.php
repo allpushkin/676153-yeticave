@@ -3,6 +3,8 @@ require_once('functions.php');
 require_once('data.php');
 require_once('init.php');
 
+session_start();
+
 $categories = get_categories($connect);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
