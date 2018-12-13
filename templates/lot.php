@@ -28,7 +28,16 @@
                         </span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span>12 000 р</span>
+                        Мин. ставка
+                        <span>
+                            <?php
+                            if($lot['current_bet']) {
+                                print(cost_formatting(htmlspecialchars($lot['current_bet'] + $lot['step'])));
+                            }  else {
+                                print(cost_formatting(htmlspecialchars($lot['start_price'] + $lot['step'])));
+                            }
+                            ?>
+                        </span>
                     </div>
                 </div>
 
