@@ -110,6 +110,15 @@ function get_lot_by_id($connect, $lot_id) {
     }
 }
 
+//Функция для добавления ставки
+function add_bet($connect, $lot, $bet, $user_id) {
+    $sql = 'INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`) VALUES (NOW(), ?, ?, ?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['id'], $user_id, $bet]);
+    $res = mysqli_stmt_execute($stmt);
+    return $res;
+}
+
 //Функция для получения списка категорий
 function get_categories($connect) {
     $sql = 'SELECT `id`, `title` FROM categories';
