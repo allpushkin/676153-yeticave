@@ -144,8 +144,17 @@ function error404_show() {
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
-        'is_auth' => $is_auth,
-        'username' => $user_name,
+        'title' => 'Ошибка',
+    ]);
+    print $layout_content;
+    die();
+}
+
+//Функция для вывода страницы 403
+function error403_show() {
+    $page_content = include_template('403.php', []);
+    $layout_content = include_template('error_layout.php', [
+        'content' => $page_content,
         'title' => 'Ошибка',
     ]);
     print $layout_content;

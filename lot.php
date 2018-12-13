@@ -29,8 +29,6 @@ $page_content = include_template('lot.php', [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
-    'is_auth' => $is_auth,
-    'username' => $user_name,
     'title' => 'YetiCave - Интернет-аукцион',
     'categories' => $categories
 ]);

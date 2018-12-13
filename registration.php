@@ -74,8 +74,6 @@ $page_content = include_template('registration.php', [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
-    'is_auth' => $is_auth,
-    'username' => $user_name,
     'title' => 'Регистрация пользователя',
     'categories' => $categories
 ]);
