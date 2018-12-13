@@ -1,8 +1,9 @@
 <?php
-$is_auth = rand(0, 1);
+$is_auth = $_SESSION['user'];
+/*
 $user_name = 'Natalia'; // укажите здесь ваше имя
 $user_avatar = 'img/user.jpg';
-/*
+
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 $products_list = [
     [

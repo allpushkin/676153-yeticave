@@ -22,21 +22,24 @@
             <a class="main-header__add-lot button" href="pages/add-lot.html">Добавить лот</a>
 
             <nav class="user-menu">
-                <?php if ($is_auth): ?>
+                <?php if (isset($is_auth)): ?>
                     <div class="user-menu__image">
-                        <img src="img/user.jpg" width="40" height="40" alt="Пользователь">
+                        <?php if ($is_auth['avatar'] != 'NULL'): ?>
+                          <img src="<?=$is_auth['avatar'];?>" width="40" height="40" alt="Пользователь">
+                        <?php endif; ?>
                     </div>
                     <div class="user-menu__logged">
-                        <p><?=$username;?></p>
+                        <p><?=$is_auth['username'];?></p>
+                        <a href="logout.php">Выход</a>
                     </div>
 
                 <?php else: ?>
                     <ul class="user-menu__list">
                         <li class="user-menu__item">
-                            <a href="#">Регистрация</a>
+                            <a href="registration.php">Регистрация</a>
                         </li>
                         <li class="user-menu__item">
-                            <a href="#">Вход</a>
+                            <a href="login.php">Вход</a>
                         </li>
                     </ul>
                 <?php endif; ?>

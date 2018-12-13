@@ -58,6 +58,15 @@ function get_user_by_email($connect, $email) {
     return $res;
 }
 
+//Функция для получения всех данных о пользователе по email и сохранения их в массив
+function get_user_all_by_email($connect, $email) {
+    $sql = "SELECT * FROM users WHERE `email` = '$email'";
+    if ($result = mysqli_query($connect, $sql)) {
+        $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        return $user;
+    }
+}
+
 //Функция для добавления лота
 function add_lot($connect, $lot) {
     $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
@@ -135,8 +144,17 @@ function error404_show() {
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
-        'is_auth' => $is_auth,
-        'username' => $user_name,
+        'title' => 'Ошибка',
+    ]);
+    print $layout_content;
+    die();
+}
+
+//Функция для вывода страницы 403
+function error403_show() {
+    $page_content = include_template('403.php', []);
+    $layout_content = include_template('error_layout.php', [
+        'content' => $page_content,
         'title' => 'Ошибка',
     ]);
     print $layout_content;
