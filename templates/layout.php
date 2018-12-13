@@ -22,12 +22,12 @@
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
 
             <nav class="user-menu">
-                <?php if (isset($_SESSION['user'])): ?>
+                <?php if (isset($is_auth)): ?>
                     <div class="user-menu__image">
-                        <img src="<?=$_SESSION['user']['avatar'];?>" width="40" height="40" alt="Пользователь">
+                        <img src="<?=$is_auth['avatar'];?>" width="40" height="40" alt="Пользователь">
                     </div>
                     <div class="user-menu__logged">
-                        <p><?=$_SESSION['user']['username'];?></p>
+                        <p><?=$is_auth['username'];?></p>
                         <a href="logout.php">Выход</a>
                     </div>
 

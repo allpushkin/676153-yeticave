@@ -5,7 +5,9 @@ require_once('init.php');
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+$is_auth = $_SESSION['user'];
+
+if (!isset($is_auth)) {
     http_response_code(403);
     error403_show();
     die();
@@ -91,6 +93,7 @@ $page_content = include_template('add_lot.php', [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
+    'is_auth' => $is_auth,
     'title' => 'Добавление лота',
     'categories' => $categories
 ]);

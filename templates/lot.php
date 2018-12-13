@@ -9,7 +9,7 @@
             <p class="lot-item__description"><?=$lot['desc'];?></p>
         </div>
         <div class="lot-item__right">
-            <?php if (isset($_SESSION['user'])): ?>
+            <?php if (isset($is_auth)): ?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
                     <?=lottime_left()?>
