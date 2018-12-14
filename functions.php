@@ -133,6 +133,24 @@ function get_bets_by_lot_id($connect, $lot_id) {
     }
 }
 
+//Функция для отображения даты создания ставки в человеческом формате
+function add_time_of_bet($val) {
+    $time = strtotime('now');
+    $interval = $time - strtotime($val);
+    if ($interval > 86400) {
+        $add_time = date('d.m.Y в H:i', strtotime($val));
+    }
+    else if ($interval > 3600 && $interval < 86400) {
+        $add_time = floor($interval / 3600) . ' часов назад';
+    }
+    else if ($interval > 60 && $interval < 3600) {
+        $add_time = floor($interval / 60) . ' минут назад';
+    }
+    else {
+        $add_time = 'меньше минуты назад';
+    }
+    return $add_time;
+}
 
 //Функция для получения списка категорий
 function get_categories($connect) {
