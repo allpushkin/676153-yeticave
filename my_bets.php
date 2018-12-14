@@ -16,7 +16,8 @@ $bets = get_bets_by_user_id($connect, $user_id);
 
 
 $page_content = include_template('my_bets.php', [
-    'bets' => $bets
+    'bets' => $bets,
+    'user_id' => $user_id
 ]);
 
 $layout_content = include_template('layout.php', [
