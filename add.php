@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($tmp_name, 'img/' . $file_name);
         $lot['lot_picture'] = 'img/' . $file_name;
 
-        if (add_lot($connect, $lot)) {
+        if (add_lot($connect, $lot, $is_auth)) {
             $lot_id = mysqli_insert_id($connect);
             header("Location: lot.php?id=" . $lot_id);
         } else {

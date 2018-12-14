@@ -68,10 +68,10 @@ function get_user_all_by_email($connect, $email) {
 }
 
 //Функция для добавления лота
-function add_lot($connect, $lot) {
-    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+function add_lot($connect, $lot, $is_auth) {
+    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
+    $stmt = db_get_prepare_stmt($connect, $sql, [$is_auth['id'], $lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
     return $res;
 }
@@ -96,7 +96,7 @@ function get_lots($connect) {
 
 //Функция для получения лота по id из параметра запроса
 function get_lot_by_id($connect, $lot_id) {
-    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, categories.`title` AS `category_title`, `step` FROM lots '
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `author_id`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, categories.`title` AS `category_title`, `step` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
          . 'WHERE lots.`id` =' .$lot_id;
