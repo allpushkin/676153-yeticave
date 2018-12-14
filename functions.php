@@ -134,6 +134,20 @@ function get_bets_by_lot_id($connect, $lot_id) {
     }
 }
 
+//Функция для получения всех ставок по id автора ставки
+function get_bets_by_user_id($connect, $user_id) {
+    $sql = 'SELECT lots.`id` AS `lot_id`, lots.`title` AS `lot_title`, lots.`picture`, categories.`title` AS `category_title`, lots.`completion_date`,`bet_amount`, bets.`add_date`, lots.`winner_id` FROM bets '
+         . 'INNER JOIN lots ON bets.`lot_id` = lots.`id` '
+         . 'INNER JOIN categories ON lots.`category_id` = categories.`id` '
+         . 'WHERE bets.`user_id` =' .$user_id;
+
+    $result = mysqli_query($connect, $sql);
+    if ($result) {
+        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $bets;
+    }
+}
+
 //Функция для отображения даты создания ставки в человеческом формате
 function add_time_of_bet($val) {
     $time = strtotime('now');

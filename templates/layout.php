@@ -30,6 +30,7 @@
                     </div>
                     <div class="user-menu__logged">
                         <p><?=$is_auth['username'];?></p>
+                        <a href="my_bets.php">Мои ставки</a>
                         <a href="logout.php">Выход</a>
                     </div>
 
