@@ -124,7 +124,7 @@ function get_bets_by_lot_id($connect, $lot_id) {
     $sql = 'SELECT bets.`add_date`, users.`username`, `bet_amount` FROM bets '
          . 'JOIN users ON bets.`user_id` = users.`id` '
          . 'WHERE bets.`lot_id` =' .$lot_id
-         . 'ORDER BY bets.`id` DESC';
+         . ' ORDER BY bets.`id` DESC';
 
     $result = mysqli_query($connect, $sql);
     if ($result) {
