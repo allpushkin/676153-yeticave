@@ -32,6 +32,12 @@ if (strtotime($lot['completion_date']) < strtotime('now')) {
     $lot_close = true;
 }
 
+foreach ($bets as $bet) {
+    if ($bet['user_id'] == $is_auth['id']) {
+        $bet_done = true;
+    }
+}
+
 if($lot['current_bet']) {
     $current_price = $lot['current_bet'];
 }  else {
@@ -69,7 +75,8 @@ $page_content = include_template('lot.php', [
     'lot' => $lot,
     'lot_close' => $lot_close,
     'bet' => $bet,
-    'bets' => $bets
+    'bets' => $bets,
+    'bet_done' => $bet_done
 ]);
 
 $layout_content = include_template('layout.php', [
