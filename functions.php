@@ -26,8 +26,8 @@ function cost_formatting($cost) {
 }
 
 //Функция для вывода оставшегося времени действия лота
-function lottime_left() {
-    $time_left = strtotime('tomorrow') - time();
+function lottime_left($val) {
+    $time_left = strtotime($val) - time();
     $hours = floor($time_left / 3600);
     $minutes = floor(($time_left % 3600) / 60);
     if ($minutes < 10) {
@@ -78,11 +78,12 @@ function add_lot($connect, $lot, $is_auth) {
 
 //Функция для получения списка новых, открытых лотов
 function get_lots($connect) {
-    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
+    $time = strtotime('now');
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
-         . 'WHERE `winner_id` IS NULL '
-         . 'GROUP BY lots.`id` '
+         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) >' .$time
+         . ' GROUP BY lots.`id` '
          . 'ORDER BY lots.`creation_date` DESC';
 
     if ($result = mysqli_query($connect, $sql)) {

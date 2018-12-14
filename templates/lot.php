@@ -10,9 +10,11 @@
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
+                <?php if (!$lot_close): ?>
                 <div class="lot-item__timer timer">
-                    <?=lottime_left()?>
+                    <?=lottime_left($lot['completion_date'])?>
                 </div>
+                <?php endif; ?>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>

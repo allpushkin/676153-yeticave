@@ -27,9 +27,11 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?=cost_formatting(htmlspecialchars($lot['start_price']));?></span>
                         </div>
+                        <?php if (strtotime($lot['completion_date']) > strtotime('now')): ?>
                         <div class="lot__timer timer">
-                            <?=lottime_left()?>
+                            <?=lottime_left($lot['completion_date'])?>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>
