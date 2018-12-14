@@ -21,6 +21,7 @@ else {
 };
 
 $lot = get_lot_by_id($connect, $lot_id);
+$bets = get_bets_by_lot_id($connect, $lot_id);
 
 if(!isset($lot['id'])) {
     http_response_code(404);
@@ -62,7 +63,8 @@ $page_content = include_template('lot.php', [
     'error' => $error,
     'is_auth' => $is_auth,
     'lot' => $lot,
-    'bet' => $bet
+    'bet' => $bet,
+    'bets' => $bets
 ]);
 
 $layout_content = include_template('layout.php', [

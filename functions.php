@@ -119,6 +119,21 @@ function add_bet($connect, $lot, $bet, $user_id) {
     return $res;
 }
 
+//Функция для получения всех ставок по id лота
+function get_bets_by_lot_id($connect, $lot_id) {
+    $sql = 'SELECT bets.`add_date`, users.`username`, `bet_amount` FROM bets '
+         . 'JOIN users ON bets.`user_id` = users.`id` '
+         . 'WHERE bets.`lot_id` =' .$lot_id
+         . 'ORDER BY bets.`id` DESC';
+
+    $result = mysqli_query($connect, $sql);
+    if ($result) {
+        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $bets;
+    }
+}
+
+
 //Функция для получения списка категорий
 function get_categories($connect) {
     $sql = 'SELECT `id`, `title` FROM categories';
