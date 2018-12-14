@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <?php if (isset($is_auth) && $is_auth['id'] !== $lot['author_id']): ?>
+                <?php if (isset($is_auth) && $is_auth['id'] !== $lot['author_id'] && !$lot_close): ?>
                     <form class="lot-item__form" action="../lot.php?id=<?=$lot['id']?>" method="post">
                         <?php $classname = isset($error) ? 'form__item--invalid' : '';
                         $value = isset($bet) ? $bet : ""; ?>

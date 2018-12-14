@@ -28,6 +28,10 @@ if(!isset($lot['id'])) {
     error404_show();
 }
 
+if (strtotime($lot['completion_date']) < strtotime('now')) {
+    $lot_close = true;
+}
+
 if($lot['current_bet']) {
     $current_price = $lot['current_bet'];
 }  else {
@@ -63,6 +67,7 @@ $page_content = include_template('lot.php', [
     'error' => $error,
     'is_auth' => $is_auth,
     'lot' => $lot,
+    'lot_close' => $lot_close,
     'bet' => $bet,
     'bets' => $bets
 ]);

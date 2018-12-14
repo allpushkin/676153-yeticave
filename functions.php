@@ -96,7 +96,7 @@ function get_lots($connect) {
 
 //Функция для получения лота по id из параметра запроса
 function get_lot_by_id($connect, $lot_id) {
-    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `author_id`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, categories.`title` AS `category_title`, `step` FROM lots '
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `author_id`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, `completion_date`, categories.`title` AS `category_title`, `step` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
          . 'WHERE lots.`id` =' .$lot_id;
