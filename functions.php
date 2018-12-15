@@ -68,10 +68,10 @@ function get_user_all_by_email($connect, $email) {
 }
 
 //Функция для добавления лота
-function add_lot($connect, $lot, $is_auth) {
+function add_lot($connect, $lot, $user_id) {
     $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    $stmt = db_get_prepare_stmt($connect, $sql, [$is_auth['id'], $lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
+    $stmt = db_get_prepare_stmt($connect, $sql, [$user_id, $lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
     return $res;
 }
