@@ -78,11 +78,10 @@ function add_lot($connect, $lot, $user_id) {
 
 //Функция для получения списка новых, открытых лотов
 function get_lots($connect) {
-    $time = strtotime('now');
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
-         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) >' .$time
+         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) > UNIX_TIMESTAMP(NOW())'
          . ' GROUP BY lots.`id` '
          . 'ORDER BY lots.`creation_date` DESC';
 
