@@ -37,12 +37,7 @@ foreach ($bets as $bet) {
         $bet_done = true;
     }
 }
-
-if($lot['current_bet']) {
-    $current_price = $lot['current_bet'];
-}  else {
-    $current_price = $lot['start_price'];
-}
+$current_price = $lot['current_bet'] ? $lot['current_bet'] : $lot['start_price'];
 
 $min_bet = $current_price + $lot['step'];
 $error ='';
