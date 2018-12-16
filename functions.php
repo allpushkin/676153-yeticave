@@ -111,12 +111,13 @@ function get_lot_by_id($connect, $lot_id) {
 }
 
 //Функция для получения лотов по поисковому запросу
-function search_lots($connect, $search) {
+function search_lots($connect, $search, $page_items, $offset) {
     $sql = 'SELECT lots.`id`, `picture`, categories.`title` AS `category_title`, lots.`title` AS `lot_title`, `desc`, `start_price`, COUNT(`bet_amount`) AS `lot_bets`, MAX(`bet_amount`) AS `current_bet`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.`id` = bets.`lot_id` '
          . 'INNER JOIN categories ON lots.`category_id` = categories.`id` '
          . 'WHERE MATCH(lots.`title`, `desc`) AGAINST(?)'
-         . 'GROUP BY lots.`id` ';
+         . 'GROUP BY lots.`id` '
+         . 'ORDER BY lots.`creation_date` DESC LIMIT ' . $page_items . ' OFFSET ' . $offset;
 
     $stmt = db_get_prepare_stmt($connect, $sql, [$search]);
     $result = mysqli_stmt_execute($stmt);
@@ -127,6 +128,19 @@ function search_lots($connect, $search) {
     }
 }
 
+//Функция для получения количества лотов, подходящих под поисковый запрос
+function count_lots_in_search($connect, $search) {
+    $sql = 'SELECT COUNT(*) as `lots_count` FROM lots'
+         . ' WHERE MATCH(lots.`title`, `desc`) AGAINST(?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$search]);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        $lots_count = mysqli_fetch_assoc($res)['lots_count'];
+        return $lots_count;
+    }
+}
 
 //Функция для добавления ставки
 function add_bet($connect, $lot, $bet, $user_id) {

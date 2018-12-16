@@ -11,13 +11,30 @@ $is_auth = $_SESSION['user'];
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $search = trim($_GET['search']);
 }
+
 if (!empty($search)) {
-    $lots = search_lots($connect, $search);
+    $cur_page = $_GET['page'] ?? 1;
+    $page_items = 9;
+    $lots_count = count_lots_in_search($connect, $search);
+    $pages_count = ceil($lots_count / $page_items);
+    $offset = ($cur_page - 1) * $page_items;
+    $pages = range(1, $pages_count);
+
+    $lots = search_lots($connect, $search, $page_items, $offset);
 }
+
+$pagination = include_template('pagination.php', [
+    'search' => $search,
+    'pages' => $pages,
+    'pages_count' => $pages_count,
+    'cur_page' => $cur_page
+]);
 
 $page_content = include_template('search.php', [
     'search' => $search,
-    'lots' => $lots
+    'lots' => $lots,
+    'pagination' => $pagination
+
 ]);
 
 $layout_content = include_template('layout.php', [
