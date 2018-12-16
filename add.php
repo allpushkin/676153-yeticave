@@ -12,6 +12,9 @@ if (!isset($is_auth)) {
     error403_show();
     die();
 }
+else {
+    $user_id = $is_auth['id'];
+}
 
 $categories = get_categories($connect);
 
@@ -75,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($tmp_name, 'img/' . $file_name);
         $lot['lot_picture'] = 'img/' . $file_name;
 
-        if (add_lot($connect, $lot)) {
+        if (add_lot($connect, $lot, $user_id)) {
             $lot_id = mysqli_insert_id($connect);
             header("Location: lot.php?id=" . $lot_id);
         } else {

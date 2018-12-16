@@ -26,8 +26,8 @@ function cost_formatting($cost) {
 }
 
 //Функция для вывода оставшегося времени действия лота
-function lottime_left() {
-    $time_left = strtotime('tomorrow') - time();
+function lottime_left($val) {
+    $time_left = strtotime($val) - time();
     $hours = floor($time_left / 3600);
     $minutes = floor(($time_left % 3600) / 60);
     if ($minutes < 10) {
@@ -68,21 +68,21 @@ function get_user_all_by_email($connect, $email) {
 }
 
 //Функция для добавления лота
-function add_lot($connect, $lot) {
-    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), 1, ?, ?, ?, ?, ?, ?, ?)';
+function add_lot($connect, $lot, $user_id) {
+    $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
+    $stmt = db_get_prepare_stmt($connect, $sql, [$user_id, $lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
     return $res;
 }
 
 //Функция для получения списка новых, открытых лотов
 function get_lots($connect) {
-    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title` FROM lots '
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
-         . 'WHERE `winner_id` IS NULL '
-         . 'GROUP BY lots.`id` '
+         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) > UNIX_TIMESTAMP(NOW())'
+         . ' GROUP BY lots.`id` '
          . 'ORDER BY lots.`creation_date` DESC';
 
     if ($result = mysqli_query($connect, $sql)) {
@@ -96,7 +96,7 @@ function get_lots($connect) {
 
 //Функция для получения лота по id из параметра запроса
 function get_lot_by_id($connect, $lot_id) {
-    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, categories.`title` AS `category_title` FROM lots '
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `author_id`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, `completion_date`, categories.`title` AS `category_title`, `step` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
          . 'INNER JOIN categories ON lots.category_id = categories.id '
          . 'WHERE lots.`id` =' .$lot_id;
@@ -108,6 +108,63 @@ function get_lot_by_id($connect, $lot_id) {
     else {
         error_show(mysqli_error($connect));
     }
+}
+
+//Функция для добавления ставки
+function add_bet($connect, $lot, $bet, $user_id) {
+    $sql = 'INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`) VALUES (NOW(), ?, ?, ?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$lot['id'], $user_id, $bet]);
+    $res = mysqli_stmt_execute($stmt);
+    return $res;
+}
+
+//Функция для получения всех ставок по id лота
+function get_bets_by_lot_id($connect, $lot_id) {
+    $sql = 'SELECT bets.`add_date`, users.`username`, `bet_amount`, `user_id` FROM bets '
+         . 'JOIN users ON bets.`user_id` = users.`id` '
+         . 'WHERE bets.`lot_id` =' .$lot_id
+         . ' ORDER BY bets.`id` DESC';
+
+    $result = mysqli_query($connect, $sql);
+    if ($result) {
+        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $bets;
+    }
+}
+
+//Функция для получения всех ставок по id автора ставки
+function get_bets_by_user_id($connect, $user_id) {
+    $sql = 'SELECT lots.`id` AS `lot_id`, lots.`title` AS `lot_title`, lots.`picture`, categories.`title` AS `category_title`, lots.`completion_date`,`bet_amount`, bets.`add_date`, lots.`winner_id`, users.`contacts` FROM bets '
+         . 'INNER JOIN lots ON bets.`lot_id` = lots.`id` '
+         . 'INNER JOIN users ON lots.`author_id` = users.`id` '
+         . 'INNER JOIN categories ON lots.`category_id` = categories.`id` '
+         . 'WHERE bets.`user_id` =' .$user_id;
+
+    $result = mysqli_query($connect, $sql);
+    if ($result) {
+        $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $bets;
+    }
+}
+
+//Функция для отображения даты создания ставки в человеческом формате
+function add_time_of_bet($val) {
+    $time = strtotime('now');
+    $interval = $time - strtotime($val);
+    if ($interval > 86400) {
+        $add_time = date('d.m.Y в H:i', strtotime($val));
+    }
+    else if ($interval > 3600 && $interval < 86400) {
+        $add_time = floor($interval / 3600) . ' часов назад';
+    }
+    else if ($interval > 60 && $interval < 3600) {
+        $add_time = floor($interval / 60) . ' минут назад';
+    }
+    else {
+        $add_time = 'меньше минуты назад';
+    }
+    return $add_time;
 }
 
 //Функция для получения списка категорий

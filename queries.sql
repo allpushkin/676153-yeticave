@@ -6,8 +6,13 @@ INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `conta
 VALUES ('2018-11-05 10:00:01', 'pupkin_ya@gmail.com', 'Василий', '123qwerty', 'img/avatar.jpg', 'тел.89161234567, город Екатеринбург');
 INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`)
 VALUES ('2018-11-10 07:15:04', 'itsmyemail@mail.ru', 'Родион', 'qazqaz1', 'img/avatar.jpg', 'тел. 89514444444');
-INSERT INTO users (`add_date`, `email`, `username`, `password`, `contacts`)
-VALUES ('2018-11-20 20:24:00', 'shurochka@yandex.ru', 'Александра', 'mishka2018', 'WhatsApp 89619998877, город Москва' );
+INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`)
+VALUES ('2018-11-20 20:24:00', 'shurochka@yandex.ru', 'Александра', 'mishka2018', 'NULL', 'WhatsApp 89619998877, город Москва' );
+
+/*Меняет открытые пароли внесенных в базу пользователей на хэшированные*/
+UPDATE users SET `password` = '$2y$10$XPGy6YTUxO5yDOOFpKxymuPe8wmeqMCjda0QcwtNqzZz5YLLpr3sW' WHERE `id` = '3';
+UPDATE users SET `password` = '$2y$10$0ZUehjI9ycCWmY4.UpwgruXFFuz14L4NuFXkf/wjznq.xV1KH.8wu' WHERE `id` = '2';
+UPDATE users SET `password` = '$2y$10$lgnz9YDFBkcvud.vVQP0NOSek75qZtl4gKHMPuXptMUbBRUZzdCVC' WHERE `id` = '1';
 
 /*Заполнение списка объявлений*/
 INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)
