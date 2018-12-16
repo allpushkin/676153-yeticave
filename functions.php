@@ -110,6 +110,24 @@ function get_lot_by_id($connect, $lot_id) {
     }
 }
 
+//Функция для получения лотов по поисковому запросу
+function search_lots($connect, $search) {
+    $sql = 'SELECT lots.`id`, `picture`, categories.`title` AS `category_title`, lots.`title` AS `lot_title`, `desc`, `start_price`, COUNT(`bet_amount`) AS `lot_bets`, MAX(`bet_amount`) AS `current_bet`, `completion_date` FROM lots '
+         . 'LEFT JOIN bets ON lots.`id` = bets.`lot_id` '
+         . 'INNER JOIN categories ON lots.`category_id` = categories.`id` '
+         . 'WHERE MATCH(lots.`title`, `desc`) AGAINST(?)'
+         . 'GROUP BY lots.`id` ';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$search]);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        $lots = mysqli_fetch_all($res, MYSQLI_ASSOC);
+        return $lots;
+    }
+}
+
+
 //Функция для добавления ставки
 function add_bet($connect, $lot, $bet, $user_id) {
     $sql = 'INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`) VALUES (NOW(), ?, ?, ?)';
@@ -122,9 +140,9 @@ function add_bet($connect, $lot, $bet, $user_id) {
 //Функция для получения всех ставок по id лота
 function get_bets_by_lot_id($connect, $lot_id) {
     $sql = 'SELECT bets.`add_date`, users.`username`, `bet_amount`, `user_id` FROM bets '
-         . 'JOIN users ON bets.`user_id` = users.`id` '
-         . 'WHERE bets.`lot_id` =' .$lot_id
-         . ' ORDER BY bets.`id` DESC';
+        . 'JOIN users ON bets.`user_id` = users.`id` '
+        . 'WHERE bets.`lot_id` =' .$lot_id
+        . ' ORDER BY bets.`id` DESC';
 
     $result = mysqli_query($connect, $sql);
     if ($result) {

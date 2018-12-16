@@ -48,4 +48,5 @@ CREATE INDEX lot_title ON lots(`title`);
 CREATE INDEX lot_author ON lots(`author_id`);
 CREATE INDEX lot_winner ON lots(`winner_id`);
 CREATE INDEX bet ON bets(`bet_amount`);
+CREATE FULLTEXT INDEX lot_search ON lots(`title`, `desc`);
 
