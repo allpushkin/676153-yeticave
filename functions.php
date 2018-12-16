@@ -140,9 +140,9 @@ function add_bet($connect, $lot, $bet, $user_id) {
 //Функция для получения всех ставок по id лота
 function get_bets_by_lot_id($connect, $lot_id) {
     $sql = 'SELECT bets.`add_date`, users.`username`, `bet_amount`, `user_id` FROM bets '
-        . 'JOIN users ON bets.`user_id` = users.`id` '
-        . 'WHERE bets.`lot_id` =' .$lot_id
-        . ' ORDER BY bets.`id` DESC';
+         . 'JOIN users ON bets.`user_id` = users.`id` '
+         . 'WHERE bets.`lot_id` =' .$lot_id
+         . ' ORDER BY bets.`id` DESC';
 
     $result = mysqli_query($connect, $sql);
     if ($result) {
