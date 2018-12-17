@@ -3,6 +3,10 @@ require_once('functions.php');
 require_once('init.php');
 
 $categories = get_categories($connect);
+$dict = [];
+$errors = [];
+$user = [];
+$search = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user = $_POST['user'];
@@ -73,6 +77,7 @@ $page_content = include_template('registration.php', [
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
+    'search' => $search,
     'title' => 'Регистрация пользователя',
     'categories' => $categories
 ]);

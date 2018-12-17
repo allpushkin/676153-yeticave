@@ -4,10 +4,19 @@ require_once('init.php');
 
 session_start();
 
-$categories = get_categories($connect);
-$is_auth = $_SESSION['user'];
+$lot_close = false;
+$bet_done = false;
+$search = "";
 
-if (isset($is_auth)) {
+$categories = get_categories($connect);
+
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
+}  else {
+    $is_auth = [];
+}
+
+if (!empty($is_auth)) {
     $user_id = $is_auth['id'];
 }
 
@@ -31,15 +40,19 @@ if (strtotime($lot['completion_date']) < strtotime('now')) {
     $lot_close = true;
 }
 
-foreach ($bets as $bet) {
-    if ($bet['user_id'] == $is_auth['id']) {
-        $bet_done = true;
+if (!empty($bets) && !empty($is_auth)) {
+    foreach ($bets as $bet) {
+        if (intval($bet['user_id']) === intval($is_auth['id'])) {
+            $bet_done = true;
+        }
     }
 }
+
 $current_price = $lot['current_bet'] ? $lot['current_bet'] : $lot['start_price'];
 
 $min_bet = $current_price + $lot['step'];
 $error ='';
+$bet = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bet = $_POST['bet_amount'];
 
@@ -77,6 +90,7 @@ $page_content = include_template('lot.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
+    'search' => $search,
     'title' => 'YetiCave - Интернет-аукцион',
     'categories' => $categories
 ]);

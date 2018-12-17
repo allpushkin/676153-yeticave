@@ -1,4 +1,10 @@
 <?php
+/**
+ * Функция подключает и выводит шаблон
+ * @param $name - имя файла с подключаемым шаблоном
+ * @param $data - массив с данными, используемыми в шаблоне
+ * @return false|string - возвращает контент страницы из шаблона с данными
+ */
 function include_template($name, $data) {
     $name = 'templates/' . $name;
     $result = '';
@@ -15,7 +21,12 @@ function include_template($name, $data) {
 
     return $result;
 }
-//Функция для форматирования цены и добавления знака рубля к ней
+
+/**
+ * Функция форматирует цену лота (разделяет пробелом число) и добавляет знак рубля
+ * @param $cost - цена лота
+ * @return float|string - возвращает строку с отформатированным числом и знаком рубля
+ */
 function cost_formatting($cost) {
     $cost = ceil($cost);
     if ($cost >= 1000) {
@@ -25,7 +36,11 @@ function cost_formatting($cost) {
     return $cost;
 }
 
-//Функция для вывода оставшегося времени действия лота
+/**
+ * Функция рассчитывает время, оставшееся до конца действия лота
+ * @param $val - дата окончания лота
+ * @return false|int|string - возвращает оставшееся время в формате ЧЧ:ММ
+ */
 function lottime_left($val) {
     $time_left = strtotime($val) - time();
     $hours = floor($time_left / 3600);
@@ -42,7 +57,13 @@ function lottime_left($val) {
     return $time_left;
 }
 
-//Функция для добавления пользователя
+/**
+ * Функция добавляет пользователя в базу данных, в кач-ве значений используются подготовленные выражения
+ * @param $connect - ресурс соединения
+ * @param $user - массив с данными о пользователе
+ * @param $password - захэшированный пароль пользователя
+ * @return bool - выполняет подготовленный запрос
+ */
 function add_user($connect, $user, $password) {
     $sql = 'INSERT INTO users (`add_date`, `email`, `username`, `password`, `avatar`, `contacts`) VALUES (NOW(), ?, ?, ?, ?, ?)';
 
@@ -51,14 +72,24 @@ function add_user($connect, $user, $password) {
     return $res;
 }
 
-//Функция для получения id пользователя по email
+/**
+ * Функция получает id пользователя по email
+ * @param $connect - ресурс соединения
+ * @param $email - переменная, содержит email пользователя
+ * @return bool|mysqli_result - выполняет запрос к БД и возвращает результат
+ */
 function get_user_by_email($connect, $email) {
     $sql = "SELECT `id` FROM users WHERE `email` = '$email'";
     $res = mysqli_query($connect, $sql);
     return $res;
 }
 
-//Функция для получения всех данных о пользователе по email и сохранения их в массив
+/**
+ * Функция получает все данные о пользователе по email
+ * @param $connect - ресурс соединения
+ * @param $email - переменная, содержит email пользователя
+ * @return array|null - выполняет запрос к БД и возвращает результат в виде массива
+ */
 function get_user_all_by_email($connect, $email) {
     $sql = "SELECT * FROM users WHERE `email` = '$email'";
     if ($result = mysqli_query($connect, $sql)) {
@@ -67,7 +98,13 @@ function get_user_all_by_email($connect, $email) {
     }
 }
 
-//Функция для добавления лота
+/**
+ * Функция добавляет новый лот в базу данных, использует подготовленные выражения
+ * @param $connect - ресурс соединения
+ * @param $lot - массив с данными лота
+ * @param $user_id - переменная, содержит id пользователя, создавшего лот
+ * @return bool - выполняет подготовленный запрос
+ */
 function add_lot($connect, $lot, $user_id) {
     $sql = 'INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
 
@@ -76,7 +113,11 @@ function add_lot($connect, $lot, $user_id) {
     return $res;
 }
 
-//Функция для получения списка новых, открытых лотов
+/**
+ * Функция получает список открытых лотов, отсортированных от самых новых к старым
+ * @param $connect - ресурс соединения
+ * @return array|null - выбирает все записи и возвращает результат в виде массива, при отсутствии результата выводит ошибку соединения с БД
+ */
 function get_lots($connect) {
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, MAX(`bet_amount`), categories.`title` AS `category_title`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
@@ -89,12 +130,15 @@ function get_lots($connect) {
         $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return $lots;
     }
-    else {
-        error_show(mysqli_error($connect));
-    }
+    error_show(mysqli_error($connect));
 }
 
-//Функция для получения лота по id из параметра запроса
+/**
+ * Функция получает данные лота по id лота из параметра запроса
+ * @param $connect - ресурс соединения
+ * @param $lot_id - переменная, содержит id лота
+ * @return array|null - выбирает необходимую запись, возвращает результат в виде массива, в случае отсутствия результата выводит ошибку соединения с БД
+ */
 function get_lot_by_id($connect, $lot_id) {
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `author_id`, `desc`, `start_price`, `picture`, MAX(`bet_amount`) AS `current_bet`, `completion_date`, categories.`title` AS `category_title`, `step` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
@@ -105,12 +149,17 @@ function get_lot_by_id($connect, $lot_id) {
         $lot = mysqli_fetch_assoc($result);
         return $lot;
     }
-    else {
-        error_show(mysqli_error($connect));
-    }
+    error_show(mysqli_error($connect));
 }
 
-//Функция для получения лотов по категории
+/**
+ * Функция получает список лотов, относящихся к определенной категории
+ * @param $connect - ресурс соединения
+ * @param $category - переменная, содержит id категории
+ * @param $page_items - переменная, содержит максимальное кол-во лотов, допустимое для показа на одной странице
+ * @param $offset - переменная, содержит данные о смещении для постраничной навигации
+ * @return array|null - выбирает подходящие записи в соответствии с запросом, возвращает результат в виде массива, или ошибку соединения с БД
+ */
 function get_lots_by_category($connect, $category, $page_items, $offset) {
     $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, COUNT(`bet_amount`) AS `lot_bets`, MAX(`bet_amount`) AS `current_bet`, `category_id`, categories.`title` AS `category_title`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.id = bets.lot_id '
@@ -123,12 +172,15 @@ function get_lots_by_category($connect, $category, $page_items, $offset) {
         $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return $lots;
     }
-    else {
-        error_show(mysqli_error($connect));
-    }
+    error_show(mysqli_error($connect));
 }
 
-//Функция для получения количества лотов в категории
+/**
+ * Функция получает количество лотов, относящихся к определенной категории
+ * @param $connect - ресурс соединения
+ * @param $category - переменная, содержит id категории
+ * @return mixed - возвращает кол-во найденных записей
+ */
 function count_lots_in_category($connect, $category) {
     $sql = 'SELECT COUNT(*) as `lots_count` FROM lots '
          . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) > UNIX_TIMESTAMP(NOW()) and `category_id` =' .$category;
@@ -139,8 +191,14 @@ function count_lots_in_category($connect, $category) {
     }
 }
 
-
-//Функция для получения лотов по поисковому запросу
+/**
+ * Функция получает лоты, в названии или описании которых есть совпадение с поисковым запросом
+ * @param $connect - ресурс соединения
+ * @param $search - переменная, содержит значение, полученное из формы поиска
+ * @param $page_items - переменная, содержит максимальное кол-во лотов, допустимое для показа на одной странице
+ * @param $offset - переменная, содержит данные о смещении для постраничной навигации
+ * @return array|null - выбирает подходящие записи в соответствии с запросом, возвращает результат в виде массива
+ */
 function search_lots($connect, $search, $page_items, $offset) {
     $sql = 'SELECT lots.`id`, `picture`, categories.`title` AS `category_title`, lots.`title` AS `lot_title`, `desc`, `start_price`, COUNT(`bet_amount`) AS `lot_bets`, MAX(`bet_amount`) AS `current_bet`, `completion_date` FROM lots '
          . 'LEFT JOIN bets ON lots.`id` = bets.`lot_id` '
@@ -158,7 +216,12 @@ function search_lots($connect, $search, $page_items, $offset) {
     }
 }
 
-//Функция для получения количества лотов, подходящих под поисковый запрос
+/**
+ * Функция получает количество лотов, попадающих под поисковый запрос
+ * @param $connect - ресурс соединения
+ * @param $search - переменная, содержит значение, полученное из формы поиска
+ * @return mixed - возвращает кол-во найденных записей
+ */
 function count_lots_in_search($connect, $search) {
     $sql = 'SELECT COUNT(*) as `lots_count` FROM lots'
          . ' WHERE MATCH(lots.`title`, `desc`) AGAINST(?)';
@@ -172,7 +235,14 @@ function count_lots_in_search($connect, $search) {
     }
 }
 
-//Функция для добавления ставки
+/**
+ * Функция добавляет ставку к лоту, сведения вносятся в базу данных
+ * @param $connect - ресурс соединения
+ * @param $lot - переменная, содержит id лота, к которому добавляется ставка
+ * @param $bet - сумма ставки, веденная пользователем
+ * @param $user_id - переменная, содержит id пользователя - автора ставки
+ * @return bool - выполняет подготовленный запрос
+ */
 function add_bet($connect, $lot, $bet, $user_id) {
     $sql = 'INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`) VALUES (NOW(), ?, ?, ?)';
 
@@ -181,7 +251,12 @@ function add_bet($connect, $lot, $bet, $user_id) {
     return $res;
 }
 
-//Функция для получения всех ставок по id лота
+/**
+ * Функция получает все ставки, относящиеся к определенному лоту, по id этого лота
+ * @param $connect - ресурс соединения
+ * @param $lot_id - переменная, содержит id лота
+ * @return array|null - выбирает все подходящие записи, возвращает результат в виде массива
+ */
 function get_bets_by_lot_id($connect, $lot_id) {
     $sql = 'SELECT bets.`add_date`, users.`username`, `bet_amount`, `user_id` FROM bets '
          . 'JOIN users ON bets.`user_id` = users.`id` '
@@ -195,7 +270,12 @@ function get_bets_by_lot_id($connect, $lot_id) {
     }
 }
 
-//Функция для получения всех ставок по id автора ставки
+/**
+ * Функция получает все ставки, созданные определенным пользователем, по id этого пользователя
+ * @param $connect - ресурс соединения
+ * @param $user_id - переменная, содержит id пользователя
+ * @return array|null - выбирает все подходящие записи, возвращает результат в виде массива
+ */
 function get_bets_by_user_id($connect, $user_id) {
     $sql = 'SELECT lots.`id` AS `lot_id`, lots.`title` AS `lot_title`, lots.`picture`, categories.`title` AS `category_title`, lots.`completion_date`,`bet_amount`, bets.`add_date`, lots.`winner_id`, users.`contacts` FROM bets '
          . 'INNER JOIN lots ON bets.`lot_id` = lots.`id` '
@@ -210,7 +290,11 @@ function get_bets_by_user_id($connect, $user_id) {
     }
 }
 
-//Функция для отображения даты создания ставки в человеческом формате
+/**
+ * Функция высчитывает интервал времени, прошедший с даты создания ставки и выводит его в человеческом формате
+ * @param $val - переменная, содержит дату добавления ставки
+ * @return false|string - возвращает результат в виде строки
+ */
 function add_time_of_bet($val) {
     $time = strtotime('now');
     $interval = $time - strtotime($val);
@@ -229,7 +313,11 @@ function add_time_of_bet($val) {
     return $add_time;
 }
 
-//Функция для получения списка категорий
+/**
+ * Функция получает список всех доступных категорий
+ * @param $connect - ресурс соединения
+ * @return array|null - возвращает все записи в виде массива, или выводит ошибку подключения к БД
+ */
 function get_categories($connect) {
     $sql = 'SELECT `id`, `title` FROM categories';
     $res = mysqli_query($connect, $sql);
@@ -238,12 +326,15 @@ function get_categories($connect) {
         $categories = mysqli_fetch_all($res, MYSQLI_ASSOC);
         return $categories;
     }
-    else {
-        error_show(mysqli_error($connect));
-    }
+    error_show(mysqli_error($connect));
 }
 
-//Функция для получения данных о категории по её id
+/**
+ * Функция получает данные об определенной категории по id этой категории
+ * @param $connect - ресурс соединения
+ * @param $category_id - переменная, содержит id категории
+ * @return array|null - возвращает данные категории в виде ассоциативного масссива
+ */
 function get_category($connect, $category_id) {
     $sql = 'SELECT `id`, `title` FROM categories WHERE `id`= ' .$category_id;
 
@@ -252,7 +343,10 @@ function get_category($connect, $category_id) {
     return $category;
 }
 
-//Функция для вывода ошибки
+/**
+ * Функция показывает страницу с ошибкой и прекращает выполнение дальнейшего кода
+ * @param $error - переменная, содержит данные об ошибке
+ */
 function error_show($error) {
     $page_content = include_template('error.php', [
         'error' => $error
@@ -267,28 +361,43 @@ function error_show($error) {
     die();
 }
 
-//Функция для вывода страницы 404
+/**
+ * Функция выводит на экран страницу 404 и прекращает выполнение дальнейшего кода
+ */
 function error404_show() {
+    $search = "";
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'title' => 'Ошибка',
+        'search' => $search
     ]);
     print $layout_content;
     die();
 }
 
-//Функция для вывода страницы 403
+/**
+ *  Функция выводит на экран страницу 403 и прекращает выполнение дальнейшего кода
+ */
 function error403_show() {
+    $search = "";
     $page_content = include_template('403.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'title' => 'Ошибка',
+        'search' => $search
     ]);
     print $layout_content;
     die();
 }
 
+/**
+ * Функция создает подготовленные выражения на основе готового sql запроса и данных
+ * @param $link - ресурс соединения
+ * @param $sql  - SQL запрос с плейсхолдерами
+ * @param array $data - Данные, вставляющиеся на место плейсхолдеров
+ * @return bool|mysqli_stmt - возвращает подготовленное выражение
+ */
 function db_get_prepare_stmt($link, $sql, $data = []) {
     $stmt = mysqli_prepare($link, $sql);
     if ($data) {

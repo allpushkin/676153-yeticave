@@ -5,7 +5,14 @@ require_once('init.php');
 session_start();
 
 $categories = get_categories($connect);
-$is_auth = $_SESSION['user'];
+$search = [];
+
+
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
+}  else {
+    $is_auth = [];
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $search = trim($_GET['search']);

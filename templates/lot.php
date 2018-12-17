@@ -34,7 +34,7 @@
                     </div>
                 </div>
 
-                <?php if (isset($is_auth) && $is_auth['id'] !== $lot['author_id'] && !$bet_done && !$lot_close): ?>
+                <?php if (!empty($is_auth) && $is_auth['id'] !== $lot['author_id'] && !$bet_done && !$lot_close): ?>
                     <form class="lot-item__form" action="../lot.php?id=<?=$lot['id']?>" method="post">
                         <?php $classname = !empty($error) ? 'form__item--invalid' : '';
                         $value = isset($bet) ? $bet : ""; ?>

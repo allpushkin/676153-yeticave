@@ -4,16 +4,21 @@ require_once('init.php');
 
 session_start();
 
-$is_auth = $_SESSION['user'];
+$dict = [];
+$errors = [];
+$lot = [];
+$search = "";
 
-if (!isset($is_auth)) {
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
+    $user_id = $is_auth['id'];
+} else {
     http_response_code(403);
     error403_show();
     die();
 }
-else {
-    $user_id = $is_auth['id'];
-}
+
+
 
 $categories = get_categories($connect);
 
@@ -37,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'step' => 'Шаг ставки',
         'completion_date' => 'Дата завершения торгов'
     ];
-    $errors = [];
     foreach ($required as $key) {
         if (empty($lot[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
@@ -96,6 +100,7 @@ $page_content = include_template('add_lot.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
+    'search' => $search,
     'title' => 'Добавление лота',
     'categories' => $categories
 ]);
