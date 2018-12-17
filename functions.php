@@ -110,6 +110,68 @@ function get_lot_by_id($connect, $lot_id) {
     }
 }
 
+//Функция для получения лотов по категории
+function get_lots_by_category($connect, $category, $page_items, $offset) {
+    $sql = 'SELECT lots.`id`, lots.`title` AS `lot_title`, `start_price`, `picture`, COUNT(`bet_amount`) AS `lot_bets`, MAX(`bet_amount`) AS `current_bet`, `category_id`, categories.`title` AS `category_title`, `completion_date` FROM lots '
+         . 'LEFT JOIN bets ON lots.id = bets.lot_id '
+         . 'INNER JOIN categories ON lots.category_id = categories.id '
+         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) > UNIX_TIMESTAMP(NOW()) and `category_id` =' . $category
+         . ' GROUP BY lots.`id` '
+         . 'ORDER BY lots.`creation_date` DESC LIMIT ' . $page_items . ' OFFSET ' . $offset;
+
+    if ($result = mysqli_query($connect, $sql)) {
+        $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $lots;
+    }
+    else {
+        error_show(mysqli_error($connect));
+    }
+}
+
+//Функция для получения количества лотов в категории
+function count_lots_in_category($connect, $category) {
+    $sql = 'SELECT COUNT(*) as `lots_count` FROM lots '
+         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) > UNIX_TIMESTAMP(NOW()) and `category_id` =' .$category;
+
+    if ($result = mysqli_query($connect, $sql)) {
+        $lots_count = mysqli_fetch_assoc($result)['lots_count'];
+        return $lots_count;
+    }
+}
+
+
+//Функция для получения лотов по поисковому запросу
+function search_lots($connect, $search, $page_items, $offset) {
+    $sql = 'SELECT lots.`id`, `picture`, categories.`title` AS `category_title`, lots.`title` AS `lot_title`, `desc`, `start_price`, COUNT(`bet_amount`) AS `lot_bets`, MAX(`bet_amount`) AS `current_bet`, `completion_date` FROM lots '
+         . 'LEFT JOIN bets ON lots.`id` = bets.`lot_id` '
+         . 'INNER JOIN categories ON lots.`category_id` = categories.`id` '
+         . 'WHERE MATCH(lots.`title`, `desc`) AGAINST(?)'
+         . 'GROUP BY lots.`id` '
+         . 'ORDER BY lots.`creation_date` DESC LIMIT ' . $page_items . ' OFFSET ' . $offset;
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$search]);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        $lots = mysqli_fetch_all($res, MYSQLI_ASSOC);
+        return $lots;
+    }
+}
+
+//Функция для получения количества лотов, подходящих под поисковый запрос
+function count_lots_in_search($connect, $search) {
+    $sql = 'SELECT COUNT(*) as `lots_count` FROM lots'
+         . ' WHERE MATCH(lots.`title`, `desc`) AGAINST(?)';
+
+    $stmt = db_get_prepare_stmt($connect, $sql, [$search]);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        $lots_count = mysqli_fetch_assoc($res)['lots_count'];
+        return $lots_count;
+    }
+}
+
 //Функция для добавления ставки
 function add_bet($connect, $lot, $bet, $user_id) {
     $sql = 'INSERT INTO bets (`add_date`, `lot_id`, `user_id`, `bet_amount`) VALUES (NOW(), ?, ?, ?)';
@@ -179,6 +241,15 @@ function get_categories($connect) {
     else {
         error_show(mysqli_error($connect));
     }
+}
+
+//Функция для получения данных о категории по её id
+function get_category($connect, $category_id) {
+    $sql = 'SELECT `id`, `title` FROM categories WHERE `id`= ' .$category_id;
+
+    $result = mysqli_query($connect, $sql);
+    $category = mysqli_fetch_assoc($result);
+    return $category;
 }
 
 //Функция для вывода ошибки
