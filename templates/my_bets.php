@@ -22,7 +22,9 @@
                     <td class="rates__timer">
                         <?php if (intval($val['winner_id']) === intval($user_id)): ?>
                             <div class="timer timer--win">Ставка выиграла</div>
-                        <?php else: ?>
+                        <?php elseif (!empty($val['winner_id']) && intval($val['winner_id']) !== intval($user_id)): ?>
+                            <div class="timer timer--win">Торги окончены</div>
+                        <?php else : ?>
                             <div class="timer timer--finishing">
                                 <?=lottime_left($val['completion_date'])?>
                             </div>

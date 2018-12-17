@@ -344,6 +344,51 @@ function get_category($connect, $category_id) {
 }
 
 /**
+ * Функция получает все лоты, у которых наступила дата окончания и еще не выбран победитель
+ * @param $connect - ресурс соединения
+ * @return bool|mysqli_result - выполняет запрос к БД
+ */
+function get_lots_without_winner($connect) {
+    $sql = 'SELECT * FROM lots '
+         . 'WHERE `winner_id` IS NULL and UNIX_TIMESTAMP(`completion_date`) <= UNIX_TIMESTAMP(NOW())'
+         . 'GROUP BY lots.`id` ';
+
+    $result = mysqli_query($connect, $sql);
+    return $result;
+}
+
+/**
+ * Функция получает максимальную ставку по определенному лоту
+ * @param $connect - ресурс соединения
+ * @param $current_lot - переменная, содержит id текущего лота
+ * @return bool|mysqli_result - выполняет запрос к БД
+ */
+function get_winner_bet($connect, $current_lot) {
+    $sql = 'SELECT bets.`lot_id`, bets.`user_id`, `bet_amount`, users.`username`, users.`email` FROM bets '
+         . 'INNER JOIN users ON bets.user_id = users.id '
+         . 'WHERE bets.lot_id =' . $current_lot
+         . ' ORDER BY `bet_amount` DESC LIMIT 1';
+
+    $result = mysqli_query($connect, $sql);
+    return $result;
+}
+
+/**
+ * Функция вносит id победителя в базу данных в запись лота
+ * @param $connect - ресурс соединения
+ * @param $max_bet_user - id пользователя, поставившего максимальную ставку (победителя)
+ * @param $lot_id - id лота
+ * @return bool|mysqli_result - выполняет запрос к БД
+ */
+function update_winner($connect, $max_bet_user, $lot_id) {
+    $sql = 'UPDATE lots SET `winner_id` =' . $max_bet_user
+         . ' WHERE `id` =' . $lot_id;
+
+    $result = mysqli_query($connect, $sql);
+    return $result;
+}
+
+/**
  * Функция показывает страницу с ошибкой и прекращает выполнение дальнейшего кода
  * @param $error - переменная, содержит данные об ошибке
  */
