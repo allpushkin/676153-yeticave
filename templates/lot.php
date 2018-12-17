@@ -6,7 +6,7 @@
                 <img src="<?=$lot['picture'];?>" width="730" height="548" alt="Сноуборд">
             </div>
             <p class="lot-item__category">Категория: <span><?=$lot['category_title'];?></span></p>
-            <p class="lot-item__description"><?=$lot['desc'];?></p>
+            <p class="lot-item__description"><?=htmlspecialchars($lot['desc']);?></p>
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
