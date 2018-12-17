@@ -1,6 +1,5 @@
 <?php
 require_once('functions.php');
-require_once('data.php');
 require_once('init.php');
 
 session_start();
@@ -59,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($error)) {
         $user_id = $is_auth['id'];
         add_bet($connect, $lot, $bet, $user_id);
+        header("Refresh:0");
     }
 }
 
