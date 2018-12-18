@@ -22,7 +22,7 @@ if (isset($_SESSION['user'])) {
 
 $categories = get_categories($connect);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST['lot'];
 
     $required = [
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dict = [
         'title' => 'Название лота',
         'category' => 'Категория лота',
-        'description' => 'Описание лота',
+        'desc' => 'Описание лота',
         'lot_picture' => 'Изображение',
         'start_price' => 'Начальная цена',
         'step' => 'Шаг ставки',
@@ -59,8 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['completion_date'] = 'Дата завершения торгов должна быть больше текущей даты хотя бы на 1 день';
     }
 
-    if ($lot['category'] == 'Выберите категорию') {
+    if ($lot['category'] === 'Выберите категорию') {
         $errors['category'] = 'Выберите, пожалуйста, категорию';
+    }
+
+    if (!isset($lot['category'])) {
+        $errors['category'] = 'Выберите, корректную категорию';
     }
 
     if (isset($_FILES['lot_picture']['name']) && !empty($_FILES['lot_picture']['tmp_name'])) {

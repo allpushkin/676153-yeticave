@@ -40,7 +40,7 @@
                         $value = isset($bet) ? $bet : ""; ?>
                         <p class="lot-item__form-item form__item <?=$classname;?>">
                             <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="text" name="bet_amount" placeholder="<?=$min_bet;?>">
+                            <input id="cost" type="text" name="bet_amount" placeholder="<?=$min_bet;?>" required>
                             <span class="form__error"><?=$error;?></span>
                         </p>
                         <button type="submit" class="button">Сделать ставку</button>
@@ -53,8 +53,8 @@
                     <?php if ($bets):?>
                       <?php foreach ($bets as $val):?>
                       <tr class="history__item">
-                          <td class="history__name"><?=$val['username']?></td>
-                          <td class="history__price"><?=cost_formatting($val['bet_amount'])?></td>
+                          <td class="history__name"><?=htmlspecialchars($val['username'])?></td>
+                          <td class="history__price"><?=cost_formatting(htmlspecialchars($val['bet_amount']))?></td>
                           <td class="history__time"><?=add_time_of_bet($val['add_date']);?></td>
                       </tr>
                       <?php endforeach; ?>

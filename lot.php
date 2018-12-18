@@ -53,7 +53,7 @@ $current_price = $lot['current_bet'] ? $lot['current_bet'] : $lot['start_price']
 $min_bet = $current_price + $lot['step'];
 $error ='';
 $bet = [];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bet = $_POST['bet_amount'];
 
     if (intval($bet) < $min_bet) {

@@ -18,7 +18,7 @@ if (isset($_SESSION['user'])) {
 
 $categories = get_categories($connect);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $enter = $_POST['enter'];
 
     $required = [

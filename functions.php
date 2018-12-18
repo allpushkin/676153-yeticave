@@ -69,7 +69,10 @@ function add_user($connect, $user, $password) {
 
     $stmt = db_get_prepare_stmt($connect, $sql, [$user['email'], $user['name'], $password, $user['avatar'], $user['contacts']]);
     $res = mysqli_stmt_execute($stmt);
-    return $res;
+    if ($res) {
+        return $res;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -81,7 +84,10 @@ function add_user($connect, $user, $password) {
 function get_user_by_email($connect, $email) {
     $sql = "SELECT `id` FROM users WHERE `email` = '$email'";
     $res = mysqli_query($connect, $sql);
-    return $res;
+    if ($res) {
+        return $res;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -96,6 +102,7 @@ function get_user_all_by_email($connect, $email) {
         $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
         return $user;
     }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -110,7 +117,10 @@ function add_lot($connect, $lot, $user_id) {
 
     $stmt = db_get_prepare_stmt($connect, $sql, [$user_id, $lot['category'], $lot['title'], $lot['desc'], $lot['lot_picture'], $lot['start_price'], $lot['completion_date'], $lot['step']]);
     $res = mysqli_stmt_execute($stmt);
-    return $res;
+    if ($res) {
+        return $res;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -189,6 +199,7 @@ function count_lots_in_category($connect, $category) {
         $lots_count = mysqli_fetch_assoc($result)['lots_count'];
         return $lots_count;
     }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -214,6 +225,7 @@ function search_lots($connect, $search, $page_items, $offset) {
         $lots = mysqli_fetch_all($res, MYSQLI_ASSOC);
         return $lots;
     }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -233,6 +245,7 @@ function count_lots_in_search($connect, $search) {
         $lots_count = mysqli_fetch_assoc($res)['lots_count'];
         return $lots_count;
     }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -248,7 +261,10 @@ function add_bet($connect, $lot, $bet, $user_id) {
 
     $stmt = db_get_prepare_stmt($connect, $sql, [$lot['id'], $user_id, $bet]);
     $res = mysqli_stmt_execute($stmt);
-    return $res;
+    if ($res) {
+        return $res;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -268,6 +284,7 @@ function get_bets_by_lot_id($connect, $lot_id) {
         $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return $bets;
     }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -288,6 +305,7 @@ function get_bets_by_user_id($connect, $user_id) {
         $bets = mysqli_fetch_all($result, MYSQLI_ASSOC);
         return $bets;
     }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -337,10 +355,14 @@ function get_categories($connect) {
  */
 function get_category($connect, $category_id) {
     $sql = 'SELECT `id`, `title` FROM categories WHERE `id`= ' .$category_id;
-
     $result = mysqli_query($connect, $sql);
-    $category = mysqli_fetch_assoc($result);
-    return $category;
+
+    if ($result) {
+        $category = mysqli_fetch_assoc($result);
+        return $category;
+    }
+    error_show(mysqli_error($connect));
+
 }
 
 /**
@@ -354,7 +376,10 @@ function get_lots_without_winner($connect) {
          . 'GROUP BY lots.`id` ';
 
     $result = mysqli_query($connect, $sql);
-    return $result;
+    if ($result) {
+        return $result;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -372,7 +397,10 @@ function get_winner_bet($connect, $current_lot, $lot_end) {
          . ' ORDER BY `bet_amount` DESC LIMIT 1';
 
     $result = mysqli_query($connect, $sql);
-    return $result;
+    if ($result) {
+        return $result;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**
@@ -387,7 +415,10 @@ function update_winner($connect, $max_bet_user, $lot_id) {
          . ' WHERE `id` =' . $lot_id;
 
     $result = mysqli_query($connect, $sql);
-    return $result;
+    if ($result) {
+        return $result;
+    }
+    error_show(mysqli_error($connect));
 }
 
 /**

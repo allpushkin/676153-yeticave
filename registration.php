@@ -8,7 +8,7 @@ $errors = [];
 $user = [];
 $search = "";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['user'];
 
     $required = [

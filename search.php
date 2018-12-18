@@ -14,7 +14,7 @@ if (isset($_SESSION['user'])) {
     $is_auth = [];
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $search = trim($_GET['search']);
 }
 
