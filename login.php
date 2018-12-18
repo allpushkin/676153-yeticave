@@ -4,10 +4,21 @@ require_once('init.php');
 
 session_start();
 
-$is_auth = $_SESSION['user'];
+$errors = [];
+$dict = [];
+$user = [];
+$enter = [];
+$search = "";
+
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
+}  else {
+    $is_auth = [];
+}
+
 $categories = get_categories($connect);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $enter = $_POST['enter'];
 
     $required = [
@@ -43,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $errors['password'] = 'Вы ввели неверный пароль';
         }
     }
-    if ($_SESSION['user']) {
+    if (!empty($_SESSION['user'])) {
         header("Location: /index.php");
         exit();
     }
@@ -58,6 +69,7 @@ $page_content = include_template('login.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
+    'search' => $search,
     'title' => 'Вход на сайт',
     'categories' => $categories
 ]);

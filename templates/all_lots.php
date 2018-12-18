@@ -10,15 +10,15 @@
                     </div>
                     <div class="lot__info">
                         <span class="lot__category"><?=$lot['category_title'];?></span>
-                        <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$lot['id'];?>"><?=$lot['lot_title'];?></a></h3>
+                        <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$lot['id'];?>"><?=htmlspecialchars($lot['lot_title']);?></a></h3>
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <?php if ($lot['current_bet']): ?>
                                     <span class="lot__amount"><?=$lot['lot_bets'];?> ставок</span>
-                                    <span class="lot__cost"><?=cost_formatting($lot['current_bet']);?></span>
+                                    <span class="lot__cost"><?=cost_formatting(htmlspecialchars($lot['current_bet']));?></span>
                                 <?php else: ?>
                                     <span class="lot__amount">Стартовая цена</span>
-                                    <span class="lot__cost"><?=cost_formatting($lot['start_price']);?></span>
+                                    <span class="lot__cost"><?=cost_formatting(htmlspecialchars($lot['start_price']));?></span>
                                 <?php endif; ?>
                             </div>
                             <?php if (strtotime($lot['completion_date']) > strtotime('now')): ?>
@@ -40,7 +40,7 @@
                     <?php endif; ?>
                 </li>
                 <?php foreach ($pages as $page): ?>
-                    <li class="pagination-item <?php if ($page == $cur_page): ?>pagination-item-active<?php endif; ?>">
+                    <li class="pagination-item <?php if (intval($page) === intval($cur_page)): ?>pagination-item-active<?php endif; ?>">
                         <a href="/all_lots.php?category=<?=$category_id?>&page=<?=$page;?>"><?=$page;?></a>
                     </li>
                 <?php endforeach; ?>

@@ -4,20 +4,25 @@ require_once('init.php');
 
 session_start();
 
-$is_auth = $_SESSION['user'];
+$dict = [];
+$errors = [];
+$lot = [];
+$search = "";
 
-if (!isset($is_auth)) {
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
+    $user_id = $is_auth['id'];
+} else {
     http_response_code(403);
     error403_show();
     die();
 }
-else {
-    $user_id = $is_auth['id'];
-}
+
+
 
 $categories = get_categories($connect);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST['lot'];
 
     $required = [
@@ -31,13 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dict = [
         'title' => 'Название лота',
         'category' => 'Категория лота',
-        'description' => 'Описание лота',
+        'desc' => 'Описание лота',
         'lot_picture' => 'Изображение',
         'start_price' => 'Начальная цена',
         'step' => 'Шаг ставки',
         'completion_date' => 'Дата завершения торгов'
     ];
-    $errors = [];
     foreach ($required as $key) {
         if (empty($lot[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
@@ -55,8 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['completion_date'] = 'Дата завершения торгов должна быть больше текущей даты хотя бы на 1 день';
     }
 
-    if ($lot['category'] == 'Выберите категорию') {
+    if ($lot['category'] === 'Выберите категорию') {
         $errors['category'] = 'Выберите, пожалуйста, категорию';
+    }
+
+    if (!isset($lot['category'])) {
+        $errors['category'] = 'Выберите, корректную категорию';
     }
 
     if (isset($_FILES['lot_picture']['name']) && !empty($_FILES['lot_picture']['tmp_name'])) {
@@ -96,6 +104,7 @@ $page_content = include_template('add_lot.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
+    'search' => $search,
     'title' => 'Добавление лота',
     'categories' => $categories
 ]);

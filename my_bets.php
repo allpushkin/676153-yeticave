@@ -5,6 +5,7 @@ require_once('init.php');
 session_start();
 
 $categories = get_categories($connect);
+$search = "";
 $is_auth = $_SESSION['user'];
 
 if (isset($is_auth)) {
@@ -22,6 +23,7 @@ $page_content = include_template('my_bets.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
+    'search' => $search,
     'title' => 'Мои ставки',
     'categories' => $categories
 ]);

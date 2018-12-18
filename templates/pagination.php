@@ -6,7 +6,7 @@
         <?php endif; ?>
     </li>
     <?php foreach ($pages as $page): ?>
-    <li class="pagination-item <?php if ($page == $cur_page): ?>pagination-item-active<?php endif; ?>">
+    <li class="pagination-item <?php if (intval($page) === intval($cur_page)): ?>pagination-item-active<?php endif; ?>">
         <a href="/search.php?search=<?=$search;?>&page=<?=$page;?>"><?=$page;?></a>
     </li>
     <?php endforeach; ?>

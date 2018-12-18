@@ -5,7 +5,14 @@ require_once('init.php');
 session_start();
 
 $categories = get_categories($connect);
-$is_auth = $_SESSION['user'];
+$search = "";
+
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
+}  else {
+    $is_auth = [];
+}
+
 
 if (isset($_GET['category'])) {
     $category_id = $_GET['category'];
@@ -40,6 +47,7 @@ $page_content = include_template('all_lots.php', [
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'is_auth' => $is_auth,
+    'search' => $search,
     'title' => 'Лоты по категории',
     'categories' => $categories
 ]);

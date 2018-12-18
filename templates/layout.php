@@ -12,7 +12,7 @@
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
-            <a class="main-header__logo"<?php if ($_SERVER['REQUEST_URI'] != '/' && $_SERVER['REQUEST_URI'] != '/index.php'): ?>href="index.php"<?php endif; ?>>
+            <a class="main-header__logo"<?php if ($_SERVER['REQUEST_URI'] !== '/' && $_SERVER['REQUEST_URI'] !== '/index.php'): ?>href="index.php"<?php endif; ?>>
                 <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="../search.php">
@@ -22,14 +22,14 @@
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
 
             <nav class="user-menu">
-                <?php if (isset($is_auth)): ?>
+                <?php if (!empty($is_auth)): ?>
                     <div class="user-menu__image">
                         <?php if ($is_auth['avatar'] != 'NULL'): ?>
                           <img src="<?=$is_auth['avatar'];?>" width="40" height="40" alt="Пользователь">
                         <?php endif; ?>
                     </div>
                     <div class="user-menu__logged">
-                        <p><?=$is_auth['username'];?></p>
+                        <p><?=htmlspecialchars($is_auth['username']);?></p>
                         <a href="my_bets.php">Мои ставки</a>
                         <a href="logout.php">Выход</a>
                     </div>
