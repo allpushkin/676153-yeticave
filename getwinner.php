@@ -14,7 +14,8 @@ if ($result) {
 
     foreach ($lots_close as $lot) {
         $current_lot = $lot['id'];
-        $bet_result = get_winner_bet($connect, $current_lot);
+        $lot_end = strtotime($lot['completion_date']);
+        $bet_result = get_winner_bet($connect, $current_lot, $lot_end);
         if ($bet_result) {
             $max_bet = mysqli_fetch_all($bet_result, MYSQLI_ASSOC);
             if (!empty($max_bet)) {

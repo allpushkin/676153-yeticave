@@ -359,14 +359,16 @@ function get_lots_without_winner($connect) {
 
 /**
  * Функция получает максимальную ставку по определенному лоту
- * @param $connect - ресурс соединения
+ * @param $connect -ресурс соединения
  * @param $current_lot - переменная, содержит id текущего лота
+ * @param $lot_end - переменная, содержит дату окончания текущего лота в unix формате
  * @return bool|mysqli_result - выполняет запрос к БД
  */
-function get_winner_bet($connect, $current_lot) {
+function get_winner_bet($connect, $current_lot, $lot_end) {
     $sql = 'SELECT bets.`lot_id`, bets.`user_id`, `bet_amount`, users.`username`, users.`email` FROM bets '
          . 'INNER JOIN users ON bets.user_id = users.id '
          . 'WHERE bets.lot_id =' . $current_lot
+         . ' AND UNIX_TIMESTAMP(bets.`add_date`) <=' .$lot_end
          . ' ORDER BY `bet_amount` DESC LIMIT 1';
 
     $result = mysqli_query($connect, $sql);
