@@ -14,4 +14,4 @@ mysqli_set_charset($connect, "utf8");
 if (!$connect) {
     die('Ошибка: Невозможно подключиться к MySQL ' . mysqli_connect_error());
 }
-?>
+

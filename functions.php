@@ -518,4 +518,3 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
     return $stmt;
 }
 
-?>
