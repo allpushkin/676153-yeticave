@@ -21,7 +21,7 @@ if (isset($_GET['category'])) {
 else {
     http_response_code(404);
     error404_show();
-};
+}
 
 if (!empty($category_id)) {
     $cur_page = $_GET['page'] ?? 1;

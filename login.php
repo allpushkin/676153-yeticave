@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     foreach ($required as $key) {
         if (empty($enter[$key])) {
             $errors[$key] = 'Поле ' . $key . ' не заполнено';
-        };
-    };
+        }
+    }
 
     if (!empty($enter['email'])) {
         $email = mysqli_real_escape_string($connect, $enter['email']);

@@ -28,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($required as $key) {
         if (empty($user[$key])) {
             $errors[$key] = 'Поле ' . $key . ' не заполнено';
-        };
-    };
+        }
+    }
 
     if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Данный email некорректен';

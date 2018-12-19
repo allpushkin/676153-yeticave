@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
 else {
     http_response_code(404);
     error404_show();
-};
+}
 
 $lot = get_lot_by_id($connect, $lot_id);
 $bets = get_bets_by_lot_id($connect, $lot_id);

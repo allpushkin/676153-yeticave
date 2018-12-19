@@ -18,8 +18,6 @@ if (isset($_SESSION['user'])) {
     die();
 }
 
-
-
 $categories = get_categories($connect);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -45,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($required as $key) {
         if (empty($lot[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
-        };
-    };
+        }
+    }
 
     if (!is_numeric($lot['start_price']) || $lot['start_price'] <= 0) {
         $errors['start_price'] = 'Поле заполнено некорректно. Здесь должно быть целое положительное число';
@@ -93,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-};
+}
 $page_content = include_template('add_lot.php', [
     'lot' => $lot,
     'errors' => $errors,
