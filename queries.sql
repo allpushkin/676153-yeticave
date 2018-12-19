@@ -18,7 +18,7 @@ UPDATE users SET `password` = '$2y$10$lgnz9YDFBkcvud.vVQP0NOSek75qZtl4gKHMPuXptM
 INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)
 VALUES ('2018-11-20 00:00:00', '1', '6', 'Маска Oakley Canopy', 'Описание маски', 'img/lot-6.jpg', '5400', '2018-12-20 00:00:00', '1');
 INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)
-VALUES ('2018-11-21 00:00:00', '3', '4', 'Куртка для сноуборда DC Mutiny Charocal', 'Описание куртки', 'img/lot-5.jpg', '7500', '2018-12-21 00:00:00', '1');
+VALUES ('2018-11-21 00:00:00', '3', '4', 'Куртка для сноуборда DC Mutiny Charocal', 'Описание куртки', 'img/lot-5.jpg', '7500', '2018-12-22 00:00:00', '1');
 INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)
 VALUES ('2018-11-22 00:00:00', '3', '3', 'Ботинки для сноуборда DC Mutiny Charocal', 'Описание ботинок', 'img/lot-4.jpg', '10999', '2018-12-22 00:00:00', '100');
 INSERT INTO lots (`creation_date`, `author_id`, `category_id`, `title`, `desc`, `picture`, `start_price`, `completion_date`, `step`)

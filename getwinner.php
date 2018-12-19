@@ -37,7 +37,7 @@ if ($result) {
                 $mailer = new Swift_Mailer($transport);
                 $mailer->send($message);
             }  else {
-                $update = update_winner($connect, $max_bet['user_id'], $lot['id']);
+                update_winner($connect, 'NULL', $lot['id']);
             }
         }
     }
