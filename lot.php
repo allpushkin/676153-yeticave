@@ -42,7 +42,7 @@ if (strtotime($lot['completion_date']) < strtotime('now')) {
 
 if (!empty($bets) && !empty($is_auth)) {
     foreach ($bets as $bet) {
-        if (intval($bet['user_id']) === intval($is_auth['id'])) {
+        if ((int)$bet['user_id'] === (int)$is_auth['id']) {
             $bet_done = true;
         }
     }
@@ -56,7 +56,7 @@ $bet = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bet = $_POST['bet_amount'];
 
-    if (intval($bet) < $min_bet) {
+    if ((int)$bet < $min_bet) {
         $error = 'Ставка не может быть меньше указанной минимальной ставки';
     }
 
