@@ -8,9 +8,9 @@ $result = get_lots_without_winner($connect);
 if ($result) {
     $lots_close = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    $transport = new Swift_SmtpTransport("phpdemo.ru", 25);
-    $transport->setUsername("keks@phpdemo.ru");
-    $transport->setPassword("htmlacademy");
+    $transport = new Swift_SmtpTransport('phpdemo.ru', 25);
+    $transport->setUsername('keks@phpdemo.ru');
+    $transport->setPassword('htmlacademy');
 
     foreach ($lots_close as $lot) {
         $current_lot = $lot['id'];
@@ -22,7 +22,7 @@ if ($result) {
                 $max_bet = $max_bet[0];
                 $update = update_winner($connect, $max_bet['user_id'], $lot['id']);
                 $message = new Swift_Message();
-                $message->setSubject("Ваша ставка выиграла");
+                $message->setSubject('Ваша ставка выиграла');
                 $message->setFrom(['keks@phpdemo.ru' => 'Yeticave']);
                 $message->setBcc([$max_bet['email'] => $max_bet['username']]);
                 $username = $max_bet['username'];

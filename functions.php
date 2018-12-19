@@ -32,7 +32,7 @@ function cost_formatting($cost) {
     if ($cost >= 1000) {
         $cost = number_format($cost,0,'',' ');
     }
-    $cost .= " ₽";
+    $cost .= ' ₽';
     return $cost;
 }
 
@@ -426,7 +426,7 @@ function update_winner($connect, $max_bet_user, $lot_id) {
  * @param $error - переменная, содержит данные об ошибке
  */
 function error_show($error) {
-    $search = "";
+    $search = '';
     $is_auth = [];
 
     if (isset($_SESSION['user'])) {
@@ -450,7 +450,7 @@ function error_show($error) {
  * Функция выводит на экран страницу 404 и прекращает выполнение дальнейшего кода
  */
 function error404_show() {
-    $search = "";
+    $search = '';
     $is_auth = [];
 
     if (isset($_SESSION['user'])) {
@@ -472,7 +472,7 @@ function error404_show() {
  *  Функция выводит на экран страницу 403 и прекращает выполнение дальнейшего кода
  */
 function error403_show() {
-    $search = "";
+    $search = '';
     $page_content = include_template('403.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,

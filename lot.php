@@ -6,7 +6,7 @@ session_start();
 
 $lot_close = false;
 $bet_done = false;
-$search = "";
+$search = '';
 
 $categories = get_categories($connect);
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         $user_id = $is_auth['id'];
         add_bet($connect, $lot, $bet, $user_id);
-        header("Refresh:0");
+        header('Refresh:0');
     }
 }
 

@@ -6,7 +6,7 @@ $categories = get_categories($connect);
 $dict = [];
 $errors = [];
 $user = [];
-$search = "";
+$search = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['user'];
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/jpeg" && $file_type !== "image/png" && $file_type !== "image/jpg") {
+        if ($file_type !== 'image/jpeg' && $file_type !== 'image/png' && $file_type !== 'image/jpg') {
             $errors['avatar'] = 'Загрузите изображение в формате JPG или PNG';
         }
     } else {
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = password_hash($user['password'], PASSWORD_DEFAULT);
 
         if (add_user($connect, $user, $password) && empty($errors)) {
-            header("Location: /login.php");
+            header('Location: /login.php');
             exit();
         }
     }

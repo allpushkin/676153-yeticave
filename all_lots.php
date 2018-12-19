@@ -5,7 +5,7 @@ require_once('init.php');
 session_start();
 
 $categories = get_categories($connect);
-$search = "";
+$search = '';
 
 if (isset($_SESSION['user'])) {
     $is_auth = $_SESSION['user'];
