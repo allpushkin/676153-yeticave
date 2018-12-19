@@ -422,10 +422,11 @@ function update_winner($connect, $max_bet_user, $lot_id) {
 }
 
 /**
- * Функция показывает страницу с ошибкой и прекращает выполнение дальнейшего кода
+ * Функция показывает страницу с ошибкой sql и прекращает выполнение дальнейшего кода
  * @param $error - переменная, содержит данные об ошибке
  */
 function error_show($error) {
+    $search = "";
     $page_content = include_template('error.php', [
         'error' => $error
     ]);
@@ -434,6 +435,7 @@ function error_show($error) {
         'is_auth' => $is_auth,
         'username' => $user_name,
         'title' => 'Ошибка',
+        'search' => $search
     ]);
     print $layout_content;
     die();
