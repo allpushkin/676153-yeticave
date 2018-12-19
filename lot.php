@@ -7,7 +7,6 @@ session_start();
 $lot_close = false;
 $bet_done = false;
 $search = "";
-$is_auth = [];
 
 $categories = get_categories($connect);
 
