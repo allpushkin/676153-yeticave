@@ -427,13 +427,18 @@ function update_winner($connect, $max_bet_user, $lot_id) {
  */
 function error_show($error) {
     $search = "";
+    $is_auth = [];
+
+    if (isset($_SESSION['user'])) {
+        $is_auth = $_SESSION['user'];
+    }
+
     $page_content = include_template('error.php', [
         'error' => $error
     ]);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'is_auth' => $is_auth,
-        'username' => $user_name,
         'title' => 'Ошибка',
         'search' => $search
     ]);
@@ -446,10 +451,17 @@ function error_show($error) {
  */
 function error404_show() {
     $search = "";
+    $is_auth = [];
+
+    if (isset($_SESSION['user'])) {
+        $is_auth = $_SESSION['user'];
+    }
+
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'title' => 'Ошибка',
+        'is_auth' => $is_auth,
         'search' => $search
     ]);
     print $layout_content;

@@ -6,10 +6,14 @@ session_start();
 
 $categories = get_categories($connect);
 $search = "";
-$is_auth = $_SESSION['user'];
 
-if (isset($is_auth)) {
+if (isset($_SESSION['user'])) {
+    $is_auth = $_SESSION['user'];
     $user_id = $is_auth['id'];
+} else {
+    http_response_code(403);
+    error403_show();
+    die();
 }
 
 $bets = get_bets_by_user_id($connect, $user_id);

@@ -7,7 +7,6 @@ session_start();
 $categories = get_categories($connect);
 $search = [];
 
-
 if (isset($_SESSION['user'])) {
     $is_auth = $_SESSION['user'];
 }  else {
