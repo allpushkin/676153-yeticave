@@ -32,7 +32,7 @@ function cost_formatting($cost) {
     if ($cost >= 1000) {
         $cost = number_format($cost,0,'',' ');
     }
-    $cost .= " ₽";
+    $cost .= ' ₽';
     return $cost;
 }
 
@@ -422,18 +422,25 @@ function update_winner($connect, $max_bet_user, $lot_id) {
 }
 
 /**
- * Функция показывает страницу с ошибкой и прекращает выполнение дальнейшего кода
+ * Функция показывает страницу с ошибкой sql и прекращает выполнение дальнейшего кода
  * @param $error - переменная, содержит данные об ошибке
  */
 function error_show($error) {
+    $search = '';
+    $is_auth = [];
+
+    if (isset($_SESSION['user'])) {
+        $is_auth = $_SESSION['user'];
+    }
+
     $page_content = include_template('error.php', [
         'error' => $error
     ]);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'is_auth' => $is_auth,
-        'username' => $user_name,
         'title' => 'Ошибка',
+        'search' => $search
     ]);
     print $layout_content;
     die();
@@ -443,11 +450,18 @@ function error_show($error) {
  * Функция выводит на экран страницу 404 и прекращает выполнение дальнейшего кода
  */
 function error404_show() {
-    $search = "";
+    $search = '';
+    $is_auth = [];
+
+    if (isset($_SESSION['user'])) {
+        $is_auth = $_SESSION['user'];
+    }
+
     $page_content = include_template('404.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
         'title' => 'Ошибка',
+        'is_auth' => $is_auth,
         'search' => $search
     ]);
     print $layout_content;
@@ -458,7 +472,7 @@ function error404_show() {
  *  Функция выводит на экран страницу 403 и прекращает выполнение дальнейшего кода
  */
 function error403_show() {
-    $search = "";
+    $search = '';
     $page_content = include_template('403.php', []);
     $layout_content = include_template('error_layout.php', [
         'content' => $page_content,
@@ -504,4 +518,3 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
     return $stmt;
 }
 
-?>

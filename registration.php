@@ -6,7 +6,7 @@ $categories = get_categories($connect);
 $dict = [];
 $errors = [];
 $user = [];
-$search = "";
+$search = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['user'];
@@ -28,13 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($required as $key) {
         if (empty($user[$key])) {
             $errors[$key] = 'Поле ' . $key . ' не заполнено';
-        };
-    };
+        }
+    }
 
     if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Данный email некорректен';
     } else {
-        $email = mysqli_real_escape_string($connect, $user['email']);
+        $email = mysqli_real_escape_string($connect, strip_tags($user['email']));
 
         if (mysqli_num_rows(get_user_by_email($connect, $email)) > 0) {
             $errors['email'] = 'Пользователь с таким email уже зарегистрирован';
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/jpeg" && $file_type !== "image/png" && $file_type !== "image/jpg") {
+        if ($file_type !== 'image/jpeg' && $file_type !== 'image/png' && $file_type !== 'image/jpg') {
             $errors['avatar'] = 'Загрузите изображение в формате JPG или PNG';
         }
     } else {
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = password_hash($user['password'], PASSWORD_DEFAULT);
 
         if (add_user($connect, $user, $password) && empty($errors)) {
-            header("Location: /login.php");
+            header('Location: /login.php');
             exit();
         }
     }
@@ -83,4 +83,4 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-?>
+

@@ -8,7 +8,7 @@ $errors = [];
 $dict = [];
 $user = [];
 $enter = [];
-$search = "";
+$search = '';
 
 if (isset($_SESSION['user'])) {
     $is_auth = $_SESSION['user'];
@@ -33,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     foreach ($required as $key) {
         if (empty($enter[$key])) {
             $errors[$key] = 'Поле ' . $key . ' не заполнено';
-        };
-    };
+        }
+    }
 
     if (!empty($enter['email'])) {
         $email = mysqli_real_escape_string($connect, $enter['email']);
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
     }
     if (!empty($_SESSION['user'])) {
-        header("Location: /index.php");
+        header('Location: /index.php');
         exit();
     }
 }
@@ -75,4 +75,4 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-?>
+

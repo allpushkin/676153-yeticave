@@ -37,7 +37,7 @@
                 <?php if (!empty($is_auth) && $is_auth['id'] !== $lot['author_id'] && !$bet_done && !$lot_close): ?>
                     <form class="lot-item__form" action="../lot.php?id=<?=$lot['id']?>" method="post">
                         <?php $classname = !empty($error) ? 'form__item--invalid' : '';
-                        $value = isset($bet) ? $bet : ""; ?>
+                        $value = isset($bet) ? $bet : ''; ?>
                         <p class="lot-item__form-item form__item <?=$classname;?>">
                             <label for="cost">Ваша ставка</label>
                             <input id="cost" type="text" name="bet_amount" placeholder="<?=$min_bet;?>" required>

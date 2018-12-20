@@ -6,7 +6,7 @@ session_start();
 
 $lot_close = false;
 $bet_done = false;
-$search = "";
+$search = '';
 
 $categories = get_categories($connect);
 
@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
 else {
     http_response_code(404);
     error404_show();
-};
+}
 
 $lot = get_lot_by_id($connect, $lot_id);
 $bets = get_bets_by_lot_id($connect, $lot_id);
@@ -42,7 +42,7 @@ if (strtotime($lot['completion_date']) < strtotime('now')) {
 
 if (!empty($bets) && !empty($is_auth)) {
     foreach ($bets as $bet) {
-        if (intval($bet['user_id']) === intval($is_auth['id'])) {
+        if ((int)$bet['user_id'] === (int)$is_auth['id']) {
             $bet_done = true;
         }
     }
@@ -56,7 +56,7 @@ $bet = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bet = $_POST['bet_amount'];
 
-    if (intval($bet) < $min_bet) {
+    if ((int)$bet < $min_bet) {
         $error = 'Ставка не может быть меньше указанной минимальной ставки';
     }
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         $user_id = $is_auth['id'];
         add_bet($connect, $lot, $bet, $user_id);
-        header("Refresh:0");
+        header('Refresh:0');
     }
 }
 
@@ -96,4 +96,4 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-?>
+

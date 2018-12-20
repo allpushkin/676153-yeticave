@@ -40,7 +40,7 @@
                     <?php endif; ?>
                 </li>
                 <?php foreach ($pages as $page): ?>
-                    <li class="pagination-item <?php if (intval($page) === intval($cur_page)): ?>pagination-item-active<?php endif; ?>">
+                    <li class="pagination-item <?php if ((int)$page === (int)$cur_page): ?>pagination-item-active<?php endif; ?>">
                         <a href="/all_lots.php?category=<?=$category_id?>&page=<?=$page;?>"><?=$page;?></a>
                     </li>
                 <?php endforeach; ?>

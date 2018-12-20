@@ -22,14 +22,15 @@
             <a class="main-header__add-lot button" href="../add.php">Добавить лот</a>
 
             <nav class="user-menu">
-                <?php if (isset($is_auth)): ?>
+                <?php if (!empty($is_auth)): ?>
                     <div class="user-menu__image">
-                        <?php if ($is_auth['avatar'] != 'NULL'): ?>
+                        <?php if ($is_auth['avatar'] !== 'NULL'): ?>
                           <img src="<?=$is_auth['avatar'];?>" width="40" height="40" alt="Пользователь">
                         <?php endif; ?>
                     </div>
                     <div class="user-menu__logged">
                         <p><?=htmlspecialchars($is_auth['username']);?></p>
+                        <a href="my_bets.php">Мои ставки</a>
                         <a href="logout.php">Выход</a>
                     </div>
 

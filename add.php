@@ -7,7 +7,7 @@ session_start();
 $dict = [];
 $errors = [];
 $lot = [];
-$search = "";
+$search = '';
 
 if (isset($_SESSION['user'])) {
     $is_auth = $_SESSION['user'];
@@ -17,8 +17,6 @@ if (isset($_SESSION['user'])) {
     error403_show();
     die();
 }
-
-
 
 $categories = get_categories($connect);
 
@@ -45,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($required as $key) {
         if (empty($lot[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
-        };
-    };
+        }
+    }
 
     if (!is_numeric($lot['start_price']) || $lot['start_price'] <= 0) {
         $errors['start_price'] = 'Поле заполнено некорректно. Здесь должно быть целое положительное число';
@@ -73,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/jpeg" && $file_type !== "image/png" && $file_type !== "image/jpg") {
+        if ($file_type !== 'image/jpeg' && $file_type !== 'image/png' && $file_type !== 'image/jpg') {
             $errors['lot_picture'] = 'Загрузите изображение в формате JPG или PNG';
         }
     }
@@ -87,13 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (add_lot($connect, $lot, $user_id)) {
             $lot_id = mysqli_insert_id($connect);
-            header("Location: lot.php?id=" . $lot_id);
+            header('Location: lot.php?id=' . $lot_id);
         } else {
             error_show(mysqli_error($connect));
         }
     }
 
-};
+}
 $page_content = include_template('add_lot.php', [
     'lot' => $lot,
     'errors' => $errors,
@@ -110,4 +108,4 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-?>
+

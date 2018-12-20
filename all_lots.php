@@ -5,7 +5,7 @@ require_once('init.php');
 session_start();
 
 $categories = get_categories($connect);
-$search = "";
+$search = '';
 
 if (isset($_SESSION['user'])) {
     $is_auth = $_SESSION['user'];
@@ -21,7 +21,7 @@ if (isset($_GET['category'])) {
 else {
     http_response_code(404);
     error404_show();
-};
+}
 
 if (!empty($category_id)) {
     $cur_page = $_GET['page'] ?? 1;
@@ -53,4 +53,4 @@ $layout_content = include_template('layout.php', [
 ]);
 
 print($layout_content);
-?>
+
