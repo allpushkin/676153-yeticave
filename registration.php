@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Данный email некорректен';
     } else {
-        $email = mysqli_real_escape_string($connect, $user['email']);
+        $email = mysqli_real_escape_string($connect, strip_tags($user['email']));
 
         if (mysqli_num_rows(get_user_by_email($connect, $email)) > 0) {
             $errors['email'] = 'Пользователь с таким email уже зарегистрирован';
